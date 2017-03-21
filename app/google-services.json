@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "939427320713",
+    "firebase_url": "https://tod-app-de735.firebaseio.com",
+    "project_id": "tod-app-de735",
+    "storage_bucket": "tod-app-de735.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939427320713:android:55aeb4787878b7f1",
+        "android_client_info": {
+          "package_name": "com.mirrket.tod_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939427320713-abu5c4i6gv7v09e334uartotk0315l86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mirrket.tod_app",
+            "certificate_hash": "b24a6becea702932ec530e6affe7a462a8c0b136"
+          }
+        },
+        {
+          "client_id": "939427320713-a5glso6em4o6k8ik1r4495p4gu500a8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ8VaeIBzqgoRnF0lJiUuMdpOW2kRYDh0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939427320713-a5glso6em4o6k8ik1r4495p4gu500a8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

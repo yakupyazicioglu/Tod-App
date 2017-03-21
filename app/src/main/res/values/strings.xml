@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tod</string>
+
+    <string name="title_activity_search">Search</string>
+    <string name="title_activity_new_post">New Post</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_signup">Sign Up</string>
+    <string name="title_activity_reset_pass">Reset Password</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_login">Login</string>
+
+    <string name="menu_login">Sign in</string>
+    <string name="menu_logout">Sign out</string>
+    <string name="menu_setting">Setting</string>
+    <string name="menu_search">Search</string>
+
+    <string name="search_hint">Type your word here..</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec condimentum ante, quis mattis mi. Proin ut rhoncus libero, ac euismod neque. Ut suscipit, enim a facilisis consequat, orci lacus venenatis orci, at ultricies orci nulla sed ex. In condimentum viverra velit, eget feugiat libero imperdiet vel. Aenean pretium, lectus vitae bibendum bibendum, diam turpis convallis eros, quis tristique leo sapien at ipsum. Praesent eu odio id nulla lobortis auctor.</string>
+    <string name="hint_comment">Write about book..</string>
+    <string name="comment_text">Send</string>
+
+    <string name="hint_username">Username</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_new_pass">New Password</string>
+    <string name="hint_confirm_pass">Confirm Password</string>
+    <string name="hint_email">E-mail</string>
+
+    <string name="sign_in">Login</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="register">Register</string>
+
+    <!-- buttons -->
+    <string name="btn_forgot_password">Forgot your password?</string>
+    <string name="btn_link_to_register">Not a member? Get registered now!</string>
+    <string name="btn_link_to_login">Already registered. Login Me!</string>
+    <string name="btn_reset_pass">Reset Password</string>
+    <string name="btn_back"><![CDATA[<< Back]]></string>
+    <string name="btn_change_pass">Change Password</string>
+    <string name="btn_change_password">Change Password</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="btn_remove_user">Remove Account</string>
+
+    <!-- user profile tablayout sections -->
+    <string name="heading_reading">Reading</string>
+    <string name="heading_readed">Readed</string>
+    <string name="heading_wanttoread">Want to Read</string>
+
+
+    <string name="lbl_forgot_pass">Forgot password?</string>
+    <string name="msg_forgot_pass">We just need your registered Email to sent you password reset instructions.</string>
+
+    <!-- static strings -->
+    <string name="stc_book">Book Name</string>
+    <string name="stc_author">Author Name</string>
+    <string name="stc_publisher">Publisher</string>
+    <string name="stc_page">Page</string>
+
+    <!-- required text -->
+    <string name="required">REQUIRED</string>
+
+    <!-- progress text -->
+    <string name="profile_picture">Profile Picture</string>
+    <string name="uploading">Uploading..</string>
+
+    <!-- alert text -->
+    <string name="move_book_to">Move to..</string>
+    <string name="vote_book">Vote!!</string>
+
+    <!-- snackbar text -->
+    <string name="no_internet_connection">No Internet Connection!</string>
+    <string name="failed_load_post">Failed to load book</string>
+    <string name="failed_sign_in">Sign In Failed</string>
+    <string name="posting">Posting..</string>
+    <string name="failed_fetch_user">Error: could not fetch user.</string>
+    <string name="too_short_pass">Password too short, enter minimum 6 characters!</string>
+    <string name="send_reset_pass">We have sent you instructions to reset your password!</string>
+    <string name="failed_reset_email">Failed to send reset to your email!</string>
+    <string name="updated_pass">Password is updated, sign in with new password!</string>
+    <string name="failed_update_pass">Failed to update password!</string>
+    <string name="enter_pass">Enter password</string>
+    <string name="profile_deleted">Your profile is deleted:( Take care of you!</string>
+    <string name="failed_delete_acoount">Failed to delete your account!</string>
+    <string name="updated_profile_image">Updated your profile picture</string>
+    <string name="failed_update_image">Failed: Picture must to max. 2mb</string>
+    <string name="failed_update_img">Something get wrong! Try again</string>
+    <string name="moved_readed">Moved to Readed</string>
+    <string name="moved_reading">Moved to Reading</string>
+    <string name="moved_wtread">Moved to Want to Read</string>
+    <string name="removed_from_list">Remove from List</string>
+
+    <!-- short book text -->
+    <string name="lates_added">Latest Added</string>
+    <string name="top_readed">Top Readed</string>
+    <string name="top_reading">Top Reading</string>
+    <string name="top_wtread">Top Want to Read</string>
+</resources>

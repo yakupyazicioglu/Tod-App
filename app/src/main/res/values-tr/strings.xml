@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tod</string>
+
+    <string name="title_activity_search">Kitap, Yazar Ara</string>
+    <string name="title_activity_new_post">Yeni Kitap</string>
+    <string name="title_activity_settings">Ayarlar</string>
+    <string name="title_activity_reset_pass">Şifreyi Sıfırla</string>
+    <string name="title_activity_register">Üye Ol</string>
+    <string name="title_activity_login">Giriş Yap</string>
+
+    <string name="menu_logout">Çıkış Yap</string>
+    <string name="menu_setting">Ayarlar</string>
+    <string name="menu_search">Arama</string>
+
+    <string name="search_hint">Bir şeyler ara..</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec condimentum ante, quis mattis mi. Proin ut rhoncus libero, ac euismod neque. Ut suscipit, enim a facilisis consequat, orci lacus venenatis orci, at ultricies orci nulla sed ex. In condimentum viverra velit, eget feugiat libero imperdiet vel. Aenean pretium, lectus vitae bibendum bibendum, diam turpis convallis eros, quis tristique leo sapien at ipsum. Praesent eu odio id nulla lobortis auctor.</string>
+    <string name="hint_comment">Kitap hakkında yaz..</string>
+    <string name="comment_text">Gönder</string>
+
+    <string name="hint_username">Kullanıcı Adı</string>
+    <string name="hint_name">İsim</string>
+    <string name="hint_surname">Soyisim</string>
+    <string name="hint_password">Şifre</string>
+    <string name="hint_new_pass">Yeni Şifre</string>
+    <string name="hint_confirm_pass">Şifreyi Tekrarla</string>
+    <string name="hint_email">E-mail</string>
+
+    <string name="sign_in">Giriş Yap</string>
+    <string name="remember_me">Beni Hatırla</string>
+    <string name="register">Üye Ol</string>
+
+    <!-- buttons -->
+    <string name="btn_forgot_password">Şifreni mi unuttun?</string>
+    <string name="btn_link_to_register">Üye değil misin? Hemen üye ol!</string>
+    <string name="btn_link_to_login">Zaten üyeyim. Giriş Yap!</string>
+    <string name="btn_reset_pass">Şifreyi Sıfırla</string>
+    <string name="btn_back"><![CDATA[<< Back]]></string>
+    <string name="btn_change_pass">Şifreyi Değiştir</string>
+    <string name="btn_change_password">Değiştir</string>
+    <string name="btn_sign_out">Çıkış Yap</string>
+    <string name="btn_remove_user">Hesabı Sil</string>
+
+    <!-- tablayout sections -->
+    <string name="heading_home">Ev</string>
+    <string name="heading_account">Hesabım</string>
+    <string name="heading_discover">Keşfet</string>
+
+    <!-- user profile tablayout sections -->
+    <string name="heading_reading">Okuyorum</string>
+    <string name="heading_readed">Okudum</string>
+    <string name="heading_wanttoread">Okuyacağım</string>
+
+
+    <string name="lbl_forgot_pass">Şifreni mi unuttun?</string>
+    <string name="msg_forgot_pass">Şifreni sıfırlayabilmemiz için e-mail adresini yazman yeterli. E-mail adresine gelen bağlantıya tıklayarak şifreni sıfırlayabilirsin.</string>
+
+    <!-- static strings -->
+    <string name="stc_book">Kitap Adı</string>
+    <string name="stc_author">Yazar Adı</string>
+    <string name="stc_publisher">Yayıncı</string>
+    <string name="stc_page">Sayfa</string>
+
+    <!-- required text -->
+    <string name="required">Gerekli!</string>
+
+    <!-- progress text -->
+    <string name="profile_picture">Profil Resmi</string>
+    <string name="uploading">Yükleniyor..</string>
+
+    <!-- alert text -->
+    <string name="move_book_to">Buraya taşı..</string>
+    <string name="vote_book">Oyla!!</string>
+
+    <!-- snackbar text -->
+    <string name="no_internet_connection">Internet Bağlantısı Yok!</string>
+    <string name="failed_load_post">Kitaplar Yüklenemedi!</string>
+    <string name="failed_sign_in">Giriş Başarısız</string>
+    <string name="posting">Booking..</string>
+    <string name="failed_fetch_user">Hata: Kullanıcı yüklenemedi</string>
+    <string name="too_short_pass">Şifre çok kısa, en az 6 karakter girmelisin!</string>
+    <string name="send_reset_pass">Şifreni sıfırlayabilmen için mail adresine gerekli link gönderildi.</string>
+    <string name="failed_reset_email">Şifre sıfırlama başarısız oldu.</string>
+    <string name="updated_pass">Şifre güncellendi,yeni şifrenle giriş yapabilirsin!</string>
+    <string name="failed_update_pass">Şifre güncelleme başarısız oldu!</string>
+    <string name="enter_pass">Şifreni gir</string>
+    <string name="profile_deleted">Hesabın silindi:( Kendine iyi bak!</string>
+    <string name="failed_delete_acoount">Hesap silinmesi başarısız!</string>
+    <string name="updated_profile_image">Profil resmin güncellendi</string>
+    <string name="failed_update_image">Hata: Profil resminiz max. 2mb olmalı!</string>
+    <string name="failed_update_img">Birşeyler yanlış gitti! Tekrar dene</string>
+    <string name="moved_readed">Okunduya taşındı</string>
+    <string name="moved_reading">Okuyoruma taşındı</string>
+    <string name="moved_wtread">Okuyacağıma taşındı</string>
+    <string name="removed_from_list">Listeden silindi!</string>
+
+    <!-- short book text -->
+    <string name="lates_added">Son Eklenenler</string>
+    <string name="top_readed">Çok Okunmuşlar</string>
+    <string name="top_reading">Çok Okunanlar</string>
+    <string name="top_wtread">Çok Okunacaklar</string>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#039BE5</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorAccent">#f8750d</color>
+
+
+    <color name="colorPrimaryM">#fd3437</color>
+    <color name="colorPrimaryDarkM">#f7272f</color>
+    <color name="colorAccentM">#5b7c87</color>
+
+    <color name="white">#ffffff</color>
+    <color name="separator_line">#e0e0e0</color>
+
+
+
+</resources>
