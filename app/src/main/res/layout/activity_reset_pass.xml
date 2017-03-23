@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="32dp"
             android:padding="10dp"
             android:text="@string/lbl_forgot_pass"
             android:textSize="20dp" />
@@ -65,7 +65,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="16dp"
             android:focusableInTouchMode="true"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
@@ -78,7 +77,6 @@
             android:id="@+id/btn_reset_pass"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:background="@color/colorPrimaryDark"
             android:text="@string/btn_reset_pass" />
 

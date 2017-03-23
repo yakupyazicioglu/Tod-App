@@ -136,7 +136,7 @@ public class SearchActivity extends BaseActivity{
                         DatabaseReference userRef = mDatabase.child("users").child(getUid());
 
                         // Run two transactions
-                        readClicked(globalPostRef);
+                        readedClicked(globalPostRef);
                         userReadeds(globalPostRef, userRef, postKey);
                         //moveOthers(globalPostRef, userRef, postKey);
                     }

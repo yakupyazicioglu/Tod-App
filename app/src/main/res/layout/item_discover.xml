@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,102 +13,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true" />
 
-        <LinearLayout
-            android:id="@+id/read_layout"
+        <include
+            layout="@layout/include_read"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginRight="8dp"
-            android:layout_alignParentRight="true"
-            android:orientation="vertical">
+            android:layout_alignParentRight="true" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp">
-
-                <ImageView
-                    android:id="@+id/readed_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ic_checkmarko" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Readed"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/readed_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="12sp"
-                    tools:text="(7)" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp">
-
-                <ImageView
-                    android:id="@+id/wantToRead_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ic_checkmarko" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Want to Read"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/wantToRead_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="12sp"
-                    tools:text="(7)" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp">
-
-                <ImageView
-                    android:id="@+id/reading_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ic_checkmarko" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reading"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:id="@+id/reading_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="12sp"
-                    tools:text="(7)" />
-            </LinearLayout>
-
-
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="84dp"
             android:layout_marginRight="10dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"

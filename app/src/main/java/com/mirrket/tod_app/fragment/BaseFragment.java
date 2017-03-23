@@ -53,7 +53,7 @@ public class BaseFragment extends Fragment {
 
     }
 
-    public void readClicked(DatabaseReference postRef) {
+    public void readedClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {

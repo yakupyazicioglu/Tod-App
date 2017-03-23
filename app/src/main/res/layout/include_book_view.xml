@@ -13,16 +13,14 @@
 
         <ImageView
             android:id="@+id/photo_iv"
-            android:layout_width="64dp"
-            android:layout_height="96dp"
-            android:padding="2dp"
+            android:layout_width="69dp"
+            android:layout_height="99dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_no_image" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="2dp"
             android:layout_marginLeft="8dp"
             android:layout_alignParentRight="true"
             android:orientation="vertical">
@@ -30,10 +28,12 @@
             <TextView
                 android:id="@+id/book_name"
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="164dp"
+                android:layout_width="wrap_content"
+                android:maxWidth="144dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
+                android:padding="2dp"
                 android:maxLines="1"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -42,13 +42,13 @@
             <TextView
                 android:id="@+id/author_name"
                 style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="164dp"
+                android:layout_width="wrap_content"
+                android:maxWidth="144dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:ellipsize="end"
+                android:padding="2dp"
                 android:maxLines="1"
                 android:textSize="12sp"
-                android:textStyle="bold"
                 tools:text="Author Name" />
 
             <LinearLayout
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     style="?android:attr/ratingBarStyleIndicator"
                     android:transformPivotX="2dp"
-                    android:transformPivotY="2dp"
+                    android:transformPivotY="12dp"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     android:numStars="5"

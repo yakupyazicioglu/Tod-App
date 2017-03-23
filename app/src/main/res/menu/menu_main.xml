@@ -6,14 +6,14 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_search"
-        android:title="@string/menu_search"
+        android:title="@string/menu_item_search"
         android:visible="true"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sorting_answers"
-        android:title="Sırala"
+        android:title="@string/menu_item_short"
         android:visible="true"
         app:showAsAction="always">
         <menu>
@@ -40,18 +40,20 @@
         android:id="@+id/action_new_post"
         android:orderInCategory="100"
         android:title="New Post"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_setting"
-        android:orderInCategory="100"
-        android:title="@string/menu_setting"
-        android:visible="true"
-        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_profile"
+        android:orderInCategory="100"
+        android:title="@string/menu_item_profile"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_setting"
         android:orderInCategory="101"
-        android:title="Profile"
+        android:title="@string/menu_item_setting"
         android:visible="true"
         app:showAsAction="never" />
 </menu>

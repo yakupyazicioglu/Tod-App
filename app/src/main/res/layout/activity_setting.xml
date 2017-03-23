@@ -4,63 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
     android:fitsSystemWindows="true"
     tools:context=".activity.SettingActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:hint="@string/hint_password"
-            android:imeActionId="@+id/login"
-            android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
-            android:maxLines="1" />
-
-        <EditText
-            android:id="@+id/newPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:hint="@string/hint_new_pass"
-            android:imeActionId="@+id/login"
-            android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
-            android:maxLines="1" />
-
-        <Button
-            android:id="@+id/changePass"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:gravity="left|center_vertical"
-            android:textAllCaps="false"
-            android:background="@color/colorPrimaryDark"
-            android:layout_marginTop="16dp"
-            android:text="@string/btn_change_pass"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/change_password_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:gravity="left|center_vertical"
-            android:textAllCaps="false"
-            android:layout_marginTop="16dp"
-            android:text="@string/btn_change_password"
-            android:background="@color/colorPrimaryDark"
-            android:textStyle="bold" />
 
         <Button
             android:id="@+id/remove_user_button"
@@ -70,9 +35,8 @@
             android:paddingLeft="8dp"
             android:gravity="left|center_vertical"
             android:textAllCaps="false"
-            android:layout_marginTop="16dp"
             android:text="@string/btn_remove_user"
-            android:background="@color/colorPrimaryDark"
+            android:background="?attr/selectableItemBackground"
             android:textStyle="bold" />
 
         <Button
@@ -83,9 +47,8 @@
             android:paddingLeft="8dp"
             android:gravity="left|center_vertical"
             android:textAllCaps="false"
-            android:layout_marginTop="16dp"
             android:text="@string/btn_sign_out"
-            android:background="@color/colorPrimaryDark"
+            android:background="?attr/selectableItemBackground"
             android:textStyle="bold" />
 
     </LinearLayout>

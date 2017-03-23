@@ -9,14 +9,13 @@
     <string name="title_activity_register">Üye Ol</string>
     <string name="title_activity_login">Giriş Yap</string>
 
-    <string name="menu_logout">Çıkış Yap</string>
-    <string name="menu_setting">Ayarlar</string>
-    <string name="menu_search">Arama</string>
-
-    <string name="search_hint">Bir şeyler ara..</string>
+    <string name="search_hint">Kitap, Yazar..</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec condimentum ante, quis mattis mi. Proin ut rhoncus libero, ac euismod neque. Ut suscipit, enim a facilisis consequat, orci lacus venenatis orci, at ultricies orci nulla sed ex. In condimentum viverra velit, eget feugiat libero imperdiet vel. Aenean pretium, lectus vitae bibendum bibendum, diam turpis convallis eros, quis tristique leo sapien at ipsum. Praesent eu odio id nulla lobortis auctor.</string>
     <string name="hint_comment">Kitap hakkında yaz..</string>
     <string name="comment_text">Gönder</string>
+    <string name="delete_account">Hesabını silmek istediğine emin misin?</string>
+    <string name="dialog_yes">Evet</string>
+    <string name="dialog_no">Hayır</string>
 
     <string name="hint_username">Kullanıcı Adı</string>
     <string name="hint_name">İsim</string>
@@ -36,15 +35,10 @@
     <string name="btn_link_to_login">Zaten üyeyim. Giriş Yap!</string>
     <string name="btn_reset_pass">Şifreyi Sıfırla</string>
     <string name="btn_back"><![CDATA[<< Back]]></string>
-    <string name="btn_change_pass">Şifreyi Değiştir</string>
+    <string name="btn_change_pass">Şifreyi Güncelle</string>
     <string name="btn_change_password">Değiştir</string>
     <string name="btn_sign_out">Çıkış Yap</string>
     <string name="btn_remove_user">Hesabı Sil</string>
-
-    <!-- tablayout sections -->
-    <string name="heading_home">Ev</string>
-    <string name="heading_account">Hesabım</string>
-    <string name="heading_discover">Keşfet</string>
 
     <!-- user profile tablayout sections -->
     <string name="heading_reading">Okuyorum</string>
@@ -71,6 +65,12 @@
     <!-- alert text -->
     <string name="move_book_to">Buraya taşı..</string>
     <string name="vote_book">Oyla!!</string>
+
+    <!-- menu text -->
+    <string name="menu_item_profile">Profil</string>
+    <string name="menu_item_short">Sırala</string>
+    <string name="menu_item_setting">Ayarlar</string>
+    <string name="menu_item_search">Ara</string>
 
     <!-- snackbar text -->
     <string name="no_internet_connection">Internet Bağlantısı Yok!</string>

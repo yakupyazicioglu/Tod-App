@@ -5,21 +5,17 @@
     <string name="title_activity_search">Search</string>
     <string name="title_activity_new_post">New Post</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_profile">Profile</string>
-    <string name="title_activity_signup">Sign Up</string>
     <string name="title_activity_reset_pass">Reset Password</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">Login</string>
 
-    <string name="menu_login">Sign in</string>
-    <string name="menu_logout">Sign out</string>
-    <string name="menu_setting">Setting</string>
-    <string name="menu_search">Search</string>
-
-    <string name="search_hint">Type your word here..</string>
+    <string name="search_hint">Book, Author..</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec condimentum ante, quis mattis mi. Proin ut rhoncus libero, ac euismod neque. Ut suscipit, enim a facilisis consequat, orci lacus venenatis orci, at ultricies orci nulla sed ex. In condimentum viverra velit, eget feugiat libero imperdiet vel. Aenean pretium, lectus vitae bibendum bibendum, diam turpis convallis eros, quis tristique leo sapien at ipsum. Praesent eu odio id nulla lobortis auctor.</string>
     <string name="hint_comment">Write about book..</string>
     <string name="comment_text">Send</string>
+    <string name="delete_account">Are you sure want to delete your account?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
 
     <string name="hint_username">Username</string>
     <string name="hint_name">Name</string>
@@ -39,7 +35,7 @@
     <string name="btn_link_to_login">Already registered. Login Me!</string>
     <string name="btn_reset_pass">Reset Password</string>
     <string name="btn_back"><![CDATA[<< Back]]></string>
-    <string name="btn_change_pass">Change Password</string>
+    <string name="btn_change_pass">Update Password</string>
     <string name="btn_change_password">Change Password</string>
     <string name="btn_sign_out">Sign Out</string>
     <string name="btn_remove_user">Remove Account</string>
@@ -70,6 +66,12 @@
     <string name="move_book_to">Move to..</string>
     <string name="vote_book">Vote!!</string>
 
+    <!-- menu text -->
+    <string name="menu_item_profile">Profile</string>
+    <string name="menu_item_short">Short</string>
+    <string name="menu_item_setting">Setting</string>
+    <string name="menu_item_search">Search</string>
+
     <!-- snackbar text -->
     <string name="no_internet_connection">No Internet Connection!</string>
     <string name="failed_load_post">Failed to load book</string>
@@ -90,7 +92,7 @@
     <string name="moved_readed">Moved to Readed</string>
     <string name="moved_reading">Moved to Reading</string>
     <string name="moved_wtread">Moved to Want to Read</string>
-    <string name="removed_from_list">Remove from List</string>
+    <string name="removed_from_list">Removed from List</string>
 
     <!-- short book text -->
     <string name="lates_added">Latest Added</string>

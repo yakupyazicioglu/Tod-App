@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="read_list">
+        <item>Okudum</item>
+        <item>Okuyacağım</item>
+        <item>Okuyorum</item>
+        <item>Listeden Sil</item>
+    </string-array>
+</resources>
