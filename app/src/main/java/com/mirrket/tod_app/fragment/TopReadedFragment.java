@@ -12,7 +12,7 @@ public class TopReadedFragment extends BookListFragment {
         // All my posts
         String myUserId = getUid();
         Query myPostsQuery = databaseReference
-                .child("posts")
+                .child("books")
                 .orderByChild("readedCount");
 
         return myPostsQuery;

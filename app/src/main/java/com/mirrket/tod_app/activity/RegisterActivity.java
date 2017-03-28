@@ -121,7 +121,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void onAuthSuccess(FirebaseUser user) {
-        String username = mUnameField.getText().toString();
+        String username = mUnameField.getText().toString().trim();
         String photoUrl = null;
 
         // Write new user

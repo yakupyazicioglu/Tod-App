@@ -1,8 +1,6 @@
 package com.mirrket.tod_app.activity;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,19 +8,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirrket.tod_app.R;
-import com.mirrket.tod_app.models.Post;
+import com.mirrket.tod_app.models.Book;
 import com.mirrket.tod_app.models.User;
 
 import java.text.SimpleDateFormat;
@@ -41,15 +36,14 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
     private UploadTask uploadTask;
     // [END declare_database_ref]
 
-    private String photoUrl;
+    private Integer numberBook = 0;
 
+    private EditText mCoverUrl;
     private EditText mTitleBook;
     private EditText mTitleAuthor;
     private EditText mPublisher;
     private EditText mPage;
     private EditText mBodyField;
-    private Uri fileUri;
-    private Uri filePath;
     private FloatingActionButton mSubmitButton;
 
 
@@ -65,6 +59,7 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
         // [END initialize_database_ref]
 
         //views
+        mCoverUrl = (EditText) findViewById(R.id.field_cover);
         mTitleBook = (EditText) findViewById(R.id.field_title);
         mBodyField = (EditText) findViewById(R.id.field_body);
         mTitleAuthor = (EditText) findViewById(R.id.field_title_author);
@@ -82,15 +77,14 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
-        final String fileUri = "";
-        final String title = mTitleBook.getText().toString();
-        final String title_author = mTitleAuthor.getText().toString();
-        final String publisher = mPublisher.getText().toString();
+        final String cover = mCoverUrl.getText().toString();
+        final String title = mTitleBook.getText().toString().trim();
+        final String title_author = mTitleAuthor.getText().toString().trim();
+        final String publisher = mPublisher.getText().toString().trim();
         final String page = mPage.getText().toString();
-        final String body = mBodyField.getText().toString();
+        final String body = mBodyField.getText().toString().trim();
         final String date = new SimpleDateFormat("d/M/yy").format(Calendar.getInstance().getTime());//"d/M/yy/hh:mm"
-        final String searchRef = title + " - " + title_author;
-        final String image_link = uploadFile();
+        final String searchRef = title.toLowerCase() + " - " + title_author.toLowerCase().trim();
 
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
@@ -114,11 +108,17 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
                             showSnack(snackText);
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username, fileUri, title, title_author, publisher, page, body, date, searchRef);
+                            writeNewPost(user.username, cover, title, title_author, publisher, page, body, searchRef);
                         }
 
                         // Finish this Activity, back to the stream
                         setEditingEnabled(true);
+                        mCoverUrl.setText("");
+                        mBodyField.setText("");
+                        mPublisher.setText("");
+                        mTitleBook.setText("");
+                        mTitleAuthor.setText("");
+                        mPage.setText("");
                         //finish();
                         // [END_EXCLUDE]
                     }
@@ -135,44 +135,6 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private String uploadFile() {
-        //if there is a file to upload
-        if (filePath != null) {
-            //displaying a progress dialog while upload is going on
-            StorageReference riversRef = storageReference.child("photos").child(filePath.getLastPathSegment());
-            uploadTask = riversRef.putFile(filePath);
-            uploadTask
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            fileUri = taskSnapshot.getMetadata().getDownloadUrl();
-                            photoUrl = String.valueOf(fileUri);
-                            Log.v("on upload fıle", "download url " + fileUri + " comıng lınk here " + photoUrl);
-                        }
-
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            photoUrl = String.valueOf(fileUri);
-                            Log.v("on upload fıle", "fail");
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.v("on upload file", "on progress");
-                        }
-                    });
-        }
-        //if there is not any file
-        else {
-            //you can display an error toast
-            String snackText = "Konumda bir resim bulunmuyor";
-            showSnack(snackText);
-        }
-        return photoUrl;
-    }
 
     private boolean validateForm() {
         String required = getString(R.string.required);
@@ -213,18 +175,24 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String image_link,
-                              String title, String title_author, String publisher,
-                              String page, String body, String date, String searchRef) {
+    private void writeNewPost(String username, String image_link,
+                              String book, String author, String publisher,
+                              String page, String info,  String searchRef) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
-        String key = mDatabase.child("posts").push().getKey();
-        Post post = new Post(userId, username, image_link, title, title_author, publisher, page, body, date, searchRef);
+        final String currentYear = new SimpleDateFormat("yy").format(Calendar.getInstance().getTime());
+        final String currentMonth = new SimpleDateFormat("M").format(Calendar.getInstance().getTime());
+        final String currentDay = new SimpleDateFormat("d").format(Calendar.getInstance().getTime());
+
+        String bookLowerCase = book.toLowerCase();  
+        String bookKey = mDatabase.child("books").push().getKey();
+        Book post = new Book(username, image_link, book, author, publisher, page, info, searchRef);
         Map<String, Object> postValues = post.toMap();
 
+        String bookId = bookKey + "-" + currentYear + currentMonth + currentDay + "-" + bookLowerCase.replace(" ","");
+
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/posts/" + key, postValues);
-        //childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+        childUpdates.put("/books/" + bookId, postValues);
 
         mDatabase.updateChildren(childUpdates);
     }
@@ -235,5 +203,5 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
             submitPost();
         }
     }
-    // [END write_fan_out]
+
 }

@@ -19,8 +19,8 @@ import com.google.firebase.database.Query;
 import com.mirrket.tod_app.R;
 import com.mirrket.tod_app.activity.BookDetailActivity;
 import com.mirrket.tod_app.behaviour.EndlessRecyclerViewScrollListener;
-import com.mirrket.tod_app.models.Post;
-import com.mirrket.tod_app.viewholder.PostViewHolder;
+import com.mirrket.tod_app.models.Book;
+import com.mirrket.tod_app.viewholder.BookViewHolder;
 
 
 public abstract class ReadListFragment extends BaseFragment {
@@ -31,7 +31,7 @@ public abstract class ReadListFragment extends BaseFragment {
     private DatabaseReference mDatabase;
     // [END define_database_reference]
 
-    private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
+    private FirebaseRecyclerAdapter<Book, BookViewHolder> mAdapter;
     private EndlessRecyclerViewScrollListener scrollListener;
     AlertDialog levelDialog;
     private RecyclerView mRecycler;
@@ -71,10 +71,10 @@ public abstract class ReadListFragment extends BaseFragment {
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
 
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_read,
-                PostViewHolder.class, postsQuery) {
+        mAdapter = new FirebaseRecyclerAdapter<Book, BookViewHolder>(Book.class, R.layout.item_read,
+                BookViewHolder.class, postsQuery) {
             @Override
-            protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
+            protected void populateViewHolder(final BookViewHolder viewHolder, final Book model, final int position) {
                 final DatabaseReference postRef = getRef(position);
 
                 // Set click listener for the whole post view
@@ -112,7 +112,7 @@ public abstract class ReadListFragment extends BaseFragment {
     }
 
     private void moveBookClicked(final String postKey) {
-        final DatabaseReference globalPostRef = mDatabase.child("posts").child(postKey);
+        final DatabaseReference globalPostRef = mDatabase.child("books").child(postKey);
         final DatabaseReference userRef = mDatabase.child("users").child(getUid());
 
         Resources res = getResources();
@@ -125,25 +125,25 @@ public abstract class ReadListFragment extends BaseFragment {
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
                     case 0:
-                        moveOthers(globalPostRef, userRef, postKey);
+                        moveOthers(globalPostRef);
                         moveToReaded(globalPostRef, userRef, postKey);
                         String snackText1 = getString(R.string.moved_readed);
                         showSnack(snackText1);
                         break;
                     case 1:
-                        moveOthers(globalPostRef, userRef, postKey);
+                        moveOthers(globalPostRef);
                         moveToWTRead(globalPostRef, userRef, postKey);
                         String snackText2 = getString(R.string.moved_wtread);
                         showSnack(snackText2);
                         break;
                     case 2:
-                        moveOthers(globalPostRef, userRef, postKey);
+                        moveOthers(globalPostRef);
                         moveToReading(globalPostRef, userRef, postKey);
                         String snackText3 = getString(R.string.moved_reading);
                         showSnack(snackText3);
                         break;
                     case 3:
-                        moveOthers(globalPostRef, userRef, postKey);
+                        moveOthers(globalPostRef);
                         String snackText4 = getString(R.string.removed_from_list);
                         showSnack(snackText4);
                         break;

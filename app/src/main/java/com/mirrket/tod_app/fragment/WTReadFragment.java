@@ -14,11 +14,11 @@ public class WTReadFragment extends ReadListFragment {
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
 
-        Query myTopPostsQuery = databaseReference
-                .child("users")
-                .child(getUid())
-                .child("wantToRead");
+        Query wantToReadList = databaseReference
+                .child("books")
+                .orderByChild("wantToRead"+"/"+getUid())
+                .equalTo(true);
 
-        return myTopPostsQuery;
+        return wantToReadList;
     }
 }

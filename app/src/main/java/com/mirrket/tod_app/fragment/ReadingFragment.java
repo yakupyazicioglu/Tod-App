@@ -14,11 +14,11 @@ public class ReadingFragment extends ReadListFragment {
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
 
-        Query myTopPostsQuery = databaseReference
-                .child("users")
-                .child(getUid())
-                .child("reading");
+        Query readingList = databaseReference
+                .child("books")
+                .orderByChild("reading"+"/"+getUid())
+                .equalTo(true);
 
-        return myTopPostsQuery;
+        return readingList;
     }
 }

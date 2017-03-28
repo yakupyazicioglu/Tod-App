@@ -142,13 +142,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
     public void onBindViewHolder(final CommentViewHolder holder, final int position) {
         final Comment comment = mComments.get(position);
         Picasso.with(mContext)
-                .load(comment.photo)
+                .load(comment.userPhoto)
                 .transform(new CircleTransform())
                 .placeholder(R.drawable.ic_action_account_circle_40)
                 .fit()
                 .into(holder.photo);
         holder.authorView.setText(comment.author);
-        holder.bodyView.setText(comment.text);
+        holder.bodyView.setText(comment.comment);
         holder.dateView.setText(comment.date);
         holder.numLike.setText(String.valueOf(comment.likeCount));
         holder.numDislike.setText(String.valueOf(comment.dislikeCount));

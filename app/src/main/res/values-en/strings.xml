@@ -55,24 +55,24 @@
     <string name="stc_publisher">Publisher</string>
     <string name="stc_page">Page</string>
 
-    <!-- required text -->
+    <!-- required comment -->
     <string name="required">REQUIRED</string>
 
-    <!-- progress text -->
+    <!-- progress comment -->
     <string name="profile_picture">Profile Picture</string>
     <string name="uploading">Uploading..</string>
 
-    <!-- alert text -->
+    <!-- alert comment -->
     <string name="move_book_to">Move to..</string>
     <string name="vote_book">Vote!!</string>
 
-    <!-- menu text -->
+    <!-- menu comment -->
     <string name="menu_item_profile">Profile</string>
     <string name="menu_item_short">Short</string>
     <string name="menu_item_setting">Setting</string>
     <string name="menu_item_search">Search</string>
 
-    <!-- snackbar text -->
+    <!-- snackbar comment -->
     <string name="no_internet_connection">No Internet Connection!</string>
     <string name="failed_load_post">Failed to load book</string>
     <string name="failed_sign_in">Sign In Failed</string>
@@ -94,9 +94,11 @@
     <string name="moved_wtread">Moved to Want to Read</string>
     <string name="removed_from_list">Removed from List</string>
 
-    <!-- short book text -->
+    <!-- short book comment -->
     <string name="lates_added">Latest Added</string>
     <string name="top_readed">Top Readed</string>
-    <string name="top_reading">Top Reading</string>
-    <string name="top_wtread">Top Want to Read</string>
+
+    <string name="readed_check">Readed</string>
+    <string name="reading_check">Reading</string>
+    <string name="wtread_check">Want to Read</string>
 </resources>

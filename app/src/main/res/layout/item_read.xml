@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp">
+    android:layout_margin="1dp">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
         android:orientation="horizontal"
         android:padding="4dp">
 
@@ -21,7 +20,7 @@
             android:src="@drawable/ic_no_image" />
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="180dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:orientation="vertical">
@@ -31,9 +30,11 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxWidth="180dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="My First Post" />
 
@@ -42,10 +43,11 @@
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxWidth="180dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="14sp"
-                android:textStyle="bold"
+                android:textSize="12sp"
                 tools:text="Author Name" />
 
 
@@ -61,11 +63,11 @@
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="108dp"
                 android:layout_marginTop="4dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="12sp"
-                android:textStyle="bold"
                 tools:text="Publisher" />
 
             <TextView
@@ -74,9 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:ellipsize="end"
                 android:textSize="12sp"
-                android:textStyle="bold"
                 tools:text="Page" />
 
         </LinearLayout>

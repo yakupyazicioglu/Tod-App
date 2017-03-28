@@ -10,11 +10,10 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class Comment {
 
-    public String cid;
     public String uid;
-    public String photo;
+    public String userPhoto;
     public String author;
-    public String text;
+    public String comment;
     public String date;
     public int likeCount = 0;
     public int dislikeCount = 0;
@@ -27,9 +26,9 @@ public class Comment {
 
     public Comment(String uid, String photo, String author, String text, String date) {
         this.uid = uid;
-        this.photo = photo;
+        this.userPhoto = photo;
         this.author = author;
-        this.text = text;
+        this.comment = text;
         this.date = date;
     }
 
@@ -38,8 +37,8 @@ public class Comment {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
-        result.put("author", author);
-        result.put("comment", text);
+        result.put("bookedBy", author);
+        result.put("comment", comment);
         result.put("date", date);
         result.put("likeCount", likeCount);
         result.put("likes", likes);

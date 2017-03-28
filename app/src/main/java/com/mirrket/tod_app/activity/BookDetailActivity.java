@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +12,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,9 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mirrket.tod_app.R;
 import com.mirrket.tod_app.adapter.CommentAdapter;
-import com.mirrket.tod_app.behaviour.AppBarLayoutBehavior;
+import com.mirrket.tod_app.models.Book;
 import com.mirrket.tod_app.models.Comment;
-import com.mirrket.tod_app.models.Post;
 import com.mirrket.tod_app.models.User;
 import com.squareup.picasso.Picasso;
 
@@ -41,13 +37,13 @@ import java.util.Calendar;
 public class BookDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "BookDetailActivity";
-    public static final String EXTRA_POST_KEY = "post_key";
+    public static final String EXTRA_POST_KEY = "book_key";
 
     private DatabaseReference mDatabase;
-    private DatabaseReference mPostReference;
+    private DatabaseReference mBookReference;
     private DatabaseReference mCommentsReference;
-    private ValueEventListener mPostListener;
-    private String mPostKey;
+    private ValueEventListener mBookListener;
+    private String mBookKey;
     private String bookTitle;
     private String authorTitle;
     private CommentAdapter mAdapter;
@@ -75,15 +71,15 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
         initCollapsingToolbar();
 
         // Get post key from intent
-        mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
-        if (mPostKey == null) {
+        mBookKey = getIntent().getStringExtra(EXTRA_POST_KEY);
+        if (mBookKey == null) {
             throw new IllegalArgumentException("Must pass EXTRA_POST_KEY");
         }
 
         // Initialize Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mPostReference = FirebaseDatabase.getInstance().getReference().child("posts").child(mPostKey);
-        mCommentsReference = FirebaseDatabase.getInstance().getReference().child("post-comments").child(mPostKey);
+        mBookReference = FirebaseDatabase.getInstance().getReference().child("books").child(mBookKey);
+        mCommentsReference = FirebaseDatabase.getInstance().getReference().child("book-comments").child(mBookKey);
 
         // Initialize Views
         mPhoto = (ImageView) findViewById(R.id.default_photo);
@@ -103,6 +99,7 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
         mPhoto.setOnClickListener(this);
 
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mCommentsRecycler.setHasFixedSize(true);
     }
 
     @Override
@@ -113,27 +110,27 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //for scroll post body when it is to long
-                // Get Post object and use the values to update the UI
-                Post post = dataSnapshot.getValue(Post.class);
+                //for scroll post book_info when it is to long
+                // Get Book object and use the values to update the UI
+                Book post = dataSnapshot.getValue(Book.class);
                 Picasso.with(getApplicationContext())
-                        .load(post.fileUri)
+                        .load(post.coverUrl)
                         .placeholder(R.drawable.ic_no_image)
                         .fit()
                         .into(mPhoto);
-                mBookView.setText(post.title);
-                mBookAuthorView.setText(post.title_author);
+                mBookView.setText(post.book);
+                mBookAuthorView.setText(post.author);
                 mPublisherView.setText(post.publisher);
                 mPageView.setText(post.page);
-                mBodyView.setText(post.body);
+                mBodyView.setText(post.book_info);
 
-                bookTitle = post.title;
-                authorTitle = post.title_author;
+                bookTitle = post.book;
+                authorTitle = post.author;
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
+                // Getting Book failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
                 // [START_EXCLUDE]
                 String snackText = getString(R.string.failed_load_post);
@@ -141,14 +138,15 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
                 // [END_EXCLUDE]
             }
         };
-        mPostReference.addValueEventListener(postListener);
+        mBookReference.addValueEventListener(postListener);
         // [END post_value_event_listener]
         // Keep copy of post listener so we can remove it when app stops
-        mPostListener = postListener;
+        mBookListener = postListener;
 
         // Listen for comments
         mAdapter = new CommentAdapter(this, mCommentsReference);
         mCommentsRecycler.setAdapter(mAdapter);
+        mBodyView.setMovementMethod(new ScrollingMovementMethod());
     }
 
     @Override
@@ -177,8 +175,8 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
     public void onStop() {
         super.onStop();
         // Remove post value event listener
-        if (mPostListener != null) {
-            mPostReference.removeEventListener(mPostListener);
+        if (mBookListener != null) {
+            mBookReference.removeEventListener(mBookListener);
         }
         mAdapter.cleanupListener();
     }
@@ -196,8 +194,6 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
         super.onResume();
 
         //fullScreenCall();
-
-        mBodyView.setMovementMethod(new ScrollingMovementMethod());
 
         /*AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
@@ -259,7 +255,7 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
 
         appBarLayout.setExpanded(true);
-        // hiding & showing the title when include_toolbar expanded & collapsed
+        // hiding & showing the book when include_toolbar expanded & collapsed
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
             int scrollRange = -1;

@@ -9,7 +9,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.mirrket.tod_app.R;
-import com.mirrket.tod_app.models.Post;
+import com.mirrket.tod_app.models.Book;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -18,13 +18,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class PostViewHolder extends RecyclerView.ViewHolder {
+public class BookViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView titleView;
-    public TextView authorTitleView;
+    public TextView bookView;
+    public TextView authorView;
     public TextView publisherView;
     public TextView pageView;
-    public TextView bodyView;
+    public TextView infoView;
     public ImageView readView;
     public ImageView wtReadView;
     public ImageView readingView;
@@ -34,7 +34,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView numReadingsView;
     public RatingBar ratingBar;
     public ImageButton overflow;
-    public float rating;
     //public TextView authorView;
     //public ImageView starView;
     //public ImageButton overflow;
@@ -42,11 +41,11 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     //public TextView numRateView;
     //public TextView dateView;
 
-    public PostViewHolder(View itemView) {
+    public BookViewHolder(View itemView) {
         super(itemView);
 
-        titleView = (TextView) itemView.findViewById(R.id.book_name);
-        authorTitleView = (TextView) itemView.findViewById(R.id.author_name);
+        bookView = (TextView) itemView.findViewById(R.id.book_name);
+        authorView = (TextView) itemView.findViewById(R.id.author_name);
         publisherView = (TextView) itemView.findViewById(R.id.field_publisher);
         pageView = (TextView) itemView.findViewById(R.id.field_page);
         photoView = (ImageView) itemView.findViewById(R.id.photo_iv);
@@ -56,7 +55,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         numWantToReadsView = (TextView) itemView.findViewById(R.id.wantToRead_num);
         numReadingsView = (TextView) itemView.findViewById(R.id.reading_num);
         numReadedsView = (TextView) itemView.findViewById(R.id.readed_num);
-        bodyView = (TextView) itemView.findViewById(R.id.post_body);
+        infoView = (TextView) itemView.findViewById(R.id.post_body);
         ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
         overflow = (ImageButton) itemView.findViewById(R.id.btn_read_info);
         //authorView = (TextView) itemView.findViewById(R.id.post_author);
@@ -67,47 +66,42 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         //dateView = (TextView) itemView.findViewById(R.id.date_title);
     }
 
-    public void bindToPost(Post post) {
+    public void bindToPost(Book post) {
         Picasso.with(itemView.getContext())
-                .load(post.fileUri)
+                .load(post.coverUrl)
                 .placeholder(R.drawable.ic_no_image)
                 .fit()
                 .into(photoView);
-        titleView.setText(post.title);
-        authorTitleView.setText(post.title_author);
+        bookView.setText(post.book);
+        authorView.setText(post.author);
         ratingBar.setRating(post.rating);
     }
 
-    public void bindToRead(Post post) {
+    public void bindToRead(Book post) {
         Picasso.with(itemView.getContext())
-                .load(post.fileUri)
+                .load(post.coverUrl)
                 .placeholder(R.drawable.ic_no_image)
                 .fit()
                 .into(photoView);
-        titleView.setText(post.title);
-        authorTitleView.setText(post.title_author);
+        bookView.setText(post.book);
+        authorView.setText(post.author);
         publisherView.setText(post.publisher);
         pageView.setText(post.page);
     }
 
-    public void bindToReaded(Post post, View.OnClickListener readClickListener) {
+    public void bindToReaded(Book post, View.OnClickListener readClickListener) {
         numReadedsView.setText(" ("+String.valueOf(post.readedCount)+")");
         readView.setOnClickListener(readClickListener);
     }
 
-    public void bindToWantToRead(Post post, View.OnClickListener wtReadClickListener) {
+    public void bindToWantToRead(Book post, View.OnClickListener wtReadClickListener) {
         numWantToReadsView.setText(" ("+String.valueOf(post.wantToReadCount)+")");
         wtReadView.setOnClickListener(wtReadClickListener);
     }
 
-    public void bindToReading(Post post, View.OnClickListener wtReadClickListener) {
+    public void bindToReading(Book post, View.OnClickListener wtReadClickListener) {
         numReadingsView.setText(" ("+String.valueOf(post.readingCount)+")");
         readingView.setOnClickListener(wtReadClickListener);
-    }
-
-    public void bindToRating(Post post, View.OnTouchListener ratingClickListener) {
-        ratingBar.setRating(post.rating);
-        readingView.setOnTouchListener(ratingClickListener);
     }
 
 

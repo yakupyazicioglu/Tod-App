@@ -4,51 +4,25 @@
     tools:context=".activity.MainActivity">
 
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_action_search"
-        android:title="@string/menu_item_search"
-        android:visible="true"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sorting_answers"
         android:title="@string/menu_item_short"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="always">
         <menu>
             <group
                 android:id="@+id/exclusive_checkable_group"
                 android:checkableBehavior="single">
                 <item
-                    android:id="@+id/itemInSubMenu1"
+                    android:id="@+id/itemAz"
                     android:checked="true"
-                    android:title="@string/lates_added" />
+                    android:title="A-Z" />
                 <item
-                    android:id="@+id/itemInSubMenu2"
-                    android:title="@string/top_readed" />
+                    android:id="@+id/itemZa"
+                    android:title="Z-A" />
             </group>
         </menu>
     </item>
-    <item
-        android:id="@+id/action_new_book"
-        android:orderInCategory="100"
-        android:title="New Book"
-        android:visible="false"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_new_author"
-        android:orderInCategory="100"
-        android:title="New Author"
-        android:visible="false"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_authors"
-        android:orderInCategory="100"
-        android:title="Authors"
-        android:visible="true"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_profile"

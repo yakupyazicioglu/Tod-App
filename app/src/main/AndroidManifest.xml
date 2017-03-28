@@ -47,6 +47,10 @@
             android:label="@string/title_activity_new_post"
             android:parentActivityName=".activity.MainActivity" />
         <activity
+            android:name=".activity.NewAuthorActivity"
+            android:label="New Author"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
             android:name=".activity.BookDetailActivity"
             android:label=""
             android:parentActivityName=".activity.MainActivity" />
@@ -67,6 +71,20 @@
             android:name=".activity.UserProfileActivity"
             android:label=""
             android:parentActivityName=".activity.MainActivity">
+        </activity>
+        <activity
+            android:name=".activity.AuthorsActivity"
+            android:label="Authors"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"
+                android:value=".SearchableActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.AuthorDetailActivity"
+            android:label=""
+            android:parentActivityName=".activity.AuthorsActivity">
         </activity>
         <receiver
             android:name=".behaviour.ConnectivityReceiver"

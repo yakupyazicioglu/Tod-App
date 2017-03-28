@@ -13,22 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.ToxicBakery.viewpager.transforms.AccordionTransformer;
-import com.ToxicBakery.viewpager.transforms.BackgroundToForegroundTransformer;
-import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.ToxicBakery.viewpager.transforms.DefaultTransformer;
-import com.ToxicBakery.viewpager.transforms.DepthPageTransformer;
-import com.ToxicBakery.viewpager.transforms.FlipHorizontalTransformer;
-import com.ToxicBakery.viewpager.transforms.ZoomInTransformer;
-import com.google.firebase.auth.FirebaseAuth;
 import com.mirrket.tod_app.R;
 import com.mirrket.tod_app.behaviour.ConnectionApplication;
 import com.mirrket.tod_app.behaviour.ConnectivityReceiver;
 import com.mirrket.tod_app.behaviour.LockableViewPager;
 import com.mirrket.tod_app.fragment.LastAddedFragment;
 import com.mirrket.tod_app.fragment.TopReadedFragment;
-import com.mirrket.tod_app.fragment.TopReadingFragment;
-import com.mirrket.tod_app.fragment.TopWTReadFragment;;
+import com.mirrket.tod_app.models.Author;
+;import java.util.Set;
 
 
 public class MainActivity extends BaseActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
@@ -52,8 +45,6 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
             private Fragment[] mFragments = new Fragment[]{
                     new LastAddedFragment(),
                     new TopReadedFragment(),
-                    new TopReadingFragment(),
-                    new TopWTReadFragment(),
             };
 
             @Override
@@ -91,7 +82,7 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        /*SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
@@ -107,7 +98,7 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
                 return true;
             }
         };
-        searchView.setOnQueryTextListener(queryTextListener);
+        searchView.setOnQueryTextListener(queryTextListener);*/
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -119,8 +110,14 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
             case R.id.action_search:
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
-            case R.id.action_new_post:
+            case R.id.action_new_book:
                 startActivity(new Intent(this, NewBookActivity.class));
+                break;
+            case R.id.action_authors:
+                startActivity(new Intent(this, AuthorsActivity.class));
+                break;
+            case R.id.action_new_author:
+                startActivity(new Intent(this, NewAuthorActivity.class));
                 break;
             case R.id.action_profile:
                 startActivity(new Intent(this, UserProfileActivity.class));
@@ -135,14 +132,6 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
             case R.id.itemInSubMenu2:
                 if (!item.isChecked()) item.setChecked(true);
                 mViewPager.setCurrentItem(1);
-                break;
-            case R.id.itemInSubMenu3:
-                if (!item.isChecked()) item.setChecked(true);
-                mViewPager.setCurrentItem(2);
-                break;
-            case R.id.itemInSubMenu4:
-                if (!item.isChecked()) item.setChecked(true);
-                mViewPager.setCurrentItem(3);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -179,7 +168,7 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
                     progressBar.setVisibility(View.VISIBLE);
                 }
             }
-        }, 7777);
+        }, 10000);
 
         // register connection status listener
         ConnectionApplication.getInstance().setConnectivityListener(this);

@@ -8,17 +8,15 @@ import java.util.Map;
 
 // [START post_class]
 @IgnoreExtraProperties
-public class Post {
+public class Book {
 
-    public String uid;
+    public String bookedBy;
+    public String coverUrl;
+    public String book;
     public String author;
-    public String fileUri;
-    public String title;
-    public String title_author;
     public String publisher;
     public String page;
-    public String body;
-    public String date;
+    public String book_info;
     public String searchRef;
     public int readedCount = 0;
     public int wantToReadCount = 0;
@@ -30,21 +28,19 @@ public class Post {
     public Map<String, Boolean> reading = new HashMap<>();
     public Map<String, Integer> rates = new HashMap<>();
 
-    public Post() {
-        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    public Book() {
+        // Default constructor required for calls to DataSnapshot.getValue(Book.class)
     }
 
-    public Post(String uid, String author, String fileUri, String title, String title_author,
-                String publisher, String page, String body, String date, String searchRef) {
-        this.uid = uid;
+    public Book(String bookedBy, String coverUrl, String book, String author,
+                String publisher, String page, String book_info, String searchRef) {
+        this.bookedBy = bookedBy;
+        this.coverUrl = coverUrl;
+        this.book = book;
         this.author = author;
-        this.fileUri = fileUri;
-        this.title = title;
-        this.title_author = title_author;
         this.publisher = publisher;
         this.page = page;
-        this.body = body;
-        this.date = date;
+        this.book_info = book_info;
         this.searchRef = searchRef;
     }
 
@@ -52,15 +48,12 @@ public class Post {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid", uid);
+        result.put("coverUrl", coverUrl);
+        result.put("book", book);
         result.put("author", author);
-        result.put("fileUri", fileUri);
-        result.put("title", title);
-        result.put("title_author", title_author);
         result.put("publisher", publisher);
         result.put("page", page);
-        result.put("body", body);
-        result.put("date", date);
+        result.put("book_info", book_info);
         result.put("searchRef", searchRef);
         result.put("readedCount", readedCount);
         result.put("readed", readed);
@@ -76,9 +69,9 @@ public class Post {
     @Exclude
     public Map<String, Object> toProfile() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("fileUri", fileUri);
-        result.put("title", title);
-        result.put("title_author", title_author);
+        result.put("coverUrl", coverUrl);
+        result.put("book", book);
+        result.put("author", author);
         result.put("publisher", publisher);
         result.put("page", page);
 

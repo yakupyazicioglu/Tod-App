@@ -55,24 +55,24 @@
     <string name="stc_publisher">Yayıncı</string>
     <string name="stc_page">Sayfa</string>
 
-    <!-- required text -->
+    <!-- required comment -->
     <string name="required">Gerekli!</string>
 
-    <!-- progress text -->
+    <!-- progress comment -->
     <string name="profile_picture">Profil Resmi</string>
     <string name="uploading">Yükleniyor..</string>
 
-    <!-- alert text -->
+    <!-- alert comment -->
     <string name="move_book_to">Buraya taşı..</string>
     <string name="vote_book">Oyla!!</string>
 
-    <!-- menu text -->
+    <!-- menu comment -->
     <string name="menu_item_profile">Profil</string>
     <string name="menu_item_short">Sırala</string>
     <string name="menu_item_setting">Ayarlar</string>
     <string name="menu_item_search">Ara</string>
 
-    <!-- snackbar text -->
+    <!-- snackbar comment -->
     <string name="no_internet_connection">Internet Bağlantısı Yok!</string>
     <string name="failed_load_post">Kitaplar Yüklenemedi!</string>
     <string name="failed_sign_in">Giriş Başarısız</string>
@@ -94,10 +94,12 @@
     <string name="moved_wtread">Okuyacağıma taşındı</string>
     <string name="removed_from_list">Listeden silindi!</string>
 
-    <!-- short book text -->
+    <!-- short book comment -->
     <string name="lates_added">Son Eklenenler</string>
-    <string name="top_readed">Çok Okunmuşlar</string>
-    <string name="top_reading">Çok Okunanlar</string>
-    <string name="top_wtread">Çok Okunacaklar</string>
+    <string name="top_readed">Çok Okunanlar</string>
+
+    <string name="readed_check">Okudum</string>
+    <string name="reading_check">Okuyorum</string>
+    <string name="wtread_check">Okuyacağım</string>
 
 </resources>

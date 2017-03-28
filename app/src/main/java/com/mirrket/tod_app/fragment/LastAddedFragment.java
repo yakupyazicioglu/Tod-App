@@ -17,7 +17,7 @@ public class LastAddedFragment extends BookListFragment {
         // My top posts by number of stars
 
         Query myTopPostsQuery = databaseReference
-                .child("posts");
+                .child("books");
         // [END my_top_posts_query]
 
         return myTopPostsQuery;

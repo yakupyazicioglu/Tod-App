@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,6 +40,7 @@ import com.mirrket.tod_app.R;
 import com.mirrket.tod_app.fragment.ReadedFragment;
 import com.mirrket.tod_app.fragment.ReadingFragment;
 import com.mirrket.tod_app.fragment.WTReadFragment;
+import com.mirrket.tod_app.models.Comment;
 import com.mirrket.tod_app.models.User;
 import com.mirrket.tod_app.util.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -71,6 +73,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
     // [START declare_database_ref]
     private DatabaseReference mUserRef;
+    private DatabaseReference mUserCommentRef;
     private StorageReference userImgRef;
     private ValueEventListener mUserListener;
     private UploadTask uploadTask;
@@ -92,6 +95,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
         // [START initialize_database_ref]
         mUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
+        mUserCommentRef = FirebaseDatabase.getInstance().getReference().child("book-comments");
         userImgRef = FirebaseStorage.getInstance().getReference().child("USER_PROFILE");
         // [END initialize_database_ref]
 
@@ -102,8 +106,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //for scroll post body when it is to long
-                // Get Post object and use the values to update the UI
+                //for scroll post book_info when it is to long
+                // Get Book object and use the values to update the UI
                 User user = dataSnapshot.getValue(User.class);
                 Picasso.with(getApplicationContext())
                         .load(user.photoUrl)
@@ -181,8 +185,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //for scroll post body when it is to long
-                // Get Post object and use the values to update the UI
+                //for scroll post book_info when it is to long
+                // Get Book object and use the values to update the UI
                 User user = dataSnapshot.getValue(User.class);
                 Picasso.with(getApplicationContext())
                         .load(user.photoUrl)
@@ -287,14 +291,14 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 }
                 else {
                     u.photoUrl = photoUrl;
+                    updateCommentPhoto(photoUrl);
                 }
                 mutableData.setValue(u);
                 return Transaction.success(mutableData);
             }
 
             @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
@@ -349,6 +353,31 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 mIsTheTitleContainerVisible = true;
             }
         }
+    }
+
+    private void updateCommentPhoto(final String photoUrl){
+        Query commentQuery = getQuery(mUserCommentRef);
+
+        commentQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Comment comment = dataSnapshot.getValue(Comment.class);
+                comment.userPhoto = photoUrl;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    Query getQuery(DatabaseReference databaseReference) {
+
+        Query searchListsQuery = databaseReference
+                .orderByChild("uid")
+                .equalTo(getUid());
+
+        return searchListsQuery;
     }
 
 }

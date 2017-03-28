@@ -7,8 +7,8 @@ android {
         applicationId "com.mirrket.tod_app"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -41,6 +41,7 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:10.2.0'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.iarcuschin:simpleratingbar:0.1.5'
     testCompile 'junit:junit:4.12'
 }
 

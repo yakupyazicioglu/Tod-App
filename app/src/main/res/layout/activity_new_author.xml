@@ -33,67 +33,16 @@
         android:padding="8dp">
 
         <EditText
-            android:id="@+id/field_cover"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="64dp"
-            android:hint="Cover Url"
-            android:inputType="textCapWords"
-            android:maxLines="1" />
-
-        <EditText
-            android:id="@+id/field_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginBottom="5dp"
-            android:hint="Book Name"
-            android:inputType="textCapWords"
-            android:maxLines="1" />
-
-        <EditText
             android:id="@+id/field_title_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_marginBottom="5dp"
+            android:layout_marginTop="64dp"
             android:hint="Author Name"
             android:inputType="textCapWords|textPersonName"
             android:maxLines="1" />
 
-        <EditText
-            android:id="@+id/field_publisher"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginBottom="5dp"
-            android:hint="Publisher"
-            android:inputType="textCapWords|textPersonName"
-            android:maxLines="1" />
-
-        <EditText
-            android:id="@+id/field_page"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginBottom="5dp"
-            android:hint="Page"
-            android:inputType="number"
-            android:maxLines="1" />
-
-        <EditText
-            android:id="@+id/field_body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_below="@+id/field_title"
-            android:layout_marginBottom="5dp"
-            android:hint="Write your post..."
-            android:inputType="textMultiLine|textCapSentences"
-            android:maxLines="10"
-            android:scrollHorizontally="false" />
 
     </LinearLayout>
 

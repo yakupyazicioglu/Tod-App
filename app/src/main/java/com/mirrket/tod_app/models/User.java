@@ -12,14 +12,6 @@ public class User {
     public String photoUrl;
     public String username;
     public String email;
-    public int readeds = 0;
-    public int readings = 0;
-    public int wanttoreads = 0;
-    public float rates = 0;
-    public Map<String, Object> readed = new HashMap<>();
-    public Map<String, Object> reading = new HashMap<>();
-    public Map<String, Object> wantToRead = new HashMap<>();
-    public Map<String, Boolean> rate = new HashMap<>();
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)

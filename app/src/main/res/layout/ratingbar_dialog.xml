@@ -2,17 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="2dp">
 
-    <RatingBar
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
         android:id="@+id/dialog_ratingbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:clickable="true"
         android:layout_gravity="center"
+        app:srb_borderColor="@color/colorAccent"
+        app:srb_starSize="40dp"
+        app:srb_rating="2"
+        app:srb_stepSize="1.0"
+        app:srb_numberOfStars="5"
         android:numStars="5"
         android:stepSize="1.0"
         android:rating="2"
@@ -22,11 +27,11 @@
         android:id="@+id/rank_dialog_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:text="@string/vote_book"
         android:focusable="false"
+        android:textColor="@color/white"
         android:background="@color/colorAccent"
-        android:layout_margin="5dip"
+        android:layout_margin="5dp"
         android:textSize="20dp"/>
 
 </LinearLayout>
