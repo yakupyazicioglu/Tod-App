@@ -43,12 +43,6 @@
         android:visible="false"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_authors"
-        android:orderInCategory="100"
-        android:title="Authors"
-        android:visible="true"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_profile"
@@ -61,6 +55,13 @@
         android:id="@+id/action_setting"
         android:orderInCategory="101"
         android:title="@string/menu_item_setting"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_app"
+        android:orderInCategory="101"
+        android:title="@string/menu_item_app"
         android:visible="true"
         app:showAsAction="never" />
 </menu>

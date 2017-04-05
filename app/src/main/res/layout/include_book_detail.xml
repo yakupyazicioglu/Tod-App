@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,25 +18,49 @@
             android:layout_alignParentRight="true"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/default_photo"
-                android:layout_width="116dp"
-                android:layout_height="192dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_no_image" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/default_photo"
+                    android:layout_width="156dp"
+                    android:layout_height="251dp"
+                    android:background="@drawable/book_shadow"
+                    android:layout_marginLeft="4dp"
+                    android:paddingLeft="2dp"
+                    android:paddingBottom="2dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_no_image" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:transformPivotX="52dp"
+                    android:transformPivotY="26dp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:rating="5"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:textSize="10sp"
                     android:text="@string/stc_book"/>
 
@@ -44,10 +69,15 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     tools:text="Book" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/separator_line" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,10 +91,15 @@
                     style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:textSize="16sp"
                     android:textStyle="bold"
+                    android:textSize="17sp"
                     tools:text="Author" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/separator_line" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -78,10 +113,15 @@
                     style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     tools:text="Publisher" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/separator_line" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,17 +135,57 @@
                     style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     tools:text="Page" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/separator_line" />
+
+                <EditText
+                    android:id="@+id/userNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|top"
+                    android:clickable="true"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:cursorVisible="false"
+                    android:lines="2"
+                    android:hint="@string/hint_book_note"/>
 
             </LinearLayout>
         </LinearLayout>
 
+        <at.blogc.android.views.ExpandableTextView
+            android:id="@+id/post_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:maxLines="10"
+            android:ellipsize="end"
+            app:animation_duration="1000"
+            android:textSize="16sp"
+            tools:text="@string/lorem" />
+
+        <TextView
+            android:id="@+id/expand_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity= "center"
+            android:background="?attr/selectableItemBackground"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="true"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:text="@string/expand_text"
+            android:textSize="12sp"/>
+
     </LinearLayout>
-
-
-
 
 </android.support.design.widget.CoordinatorLayout>

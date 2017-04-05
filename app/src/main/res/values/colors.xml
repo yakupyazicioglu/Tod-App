@@ -11,8 +11,10 @@
     <color name="colorAccentM">#5b7c87</color>
 
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="separator_line">#e0e0e0</color>
-
+    <color name="transparent">#00ffffff</color>
+    <color name="shadow">#8a795d</color>
 
 
 </resources>

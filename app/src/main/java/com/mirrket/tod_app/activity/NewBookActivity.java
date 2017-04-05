@@ -77,13 +77,12 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
-        final String cover = mCoverUrl.getText().toString();
+        final String cover = mCoverUrl.getText().toString().trim();
         final String title = mTitleBook.getText().toString().trim();
         final String title_author = mTitleAuthor.getText().toString().trim();
         final String publisher = mPublisher.getText().toString().trim();
         final String page = mPage.getText().toString();
         final String body = mBodyField.getText().toString().trim();
-        final String date = new SimpleDateFormat("d/M/yy").format(Calendar.getInstance().getTime());//"d/M/yy/hh:mm"
         final String searchRef = title.toLowerCase() + " - " + title_author.toLowerCase().trim();
 
         // Disable button so there are no multi-posts
@@ -115,9 +114,7 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
                         setEditingEnabled(true);
                         mCoverUrl.setText("");
                         mBodyField.setText("");
-                        mPublisher.setText("");
                         mTitleBook.setText("");
-                        mTitleAuthor.setText("");
                         mPage.setText("");
                         //finish();
                         // [END_EXCLUDE]
@@ -178,18 +175,13 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
     private void writeNewPost(String username, String image_link,
                               String book, String author, String publisher,
                               String page, String info,  String searchRef) {
-        // Create new post at /user-posts/$userid/$postid and at
-        // /posts/$postid simultaneously
-        final String currentYear = new SimpleDateFormat("yy").format(Calendar.getInstance().getTime());
-        final String currentMonth = new SimpleDateFormat("M").format(Calendar.getInstance().getTime());
-        final String currentDay = new SimpleDateFormat("d").format(Calendar.getInstance().getTime());
 
         String bookLowerCase = book.toLowerCase();  
         String bookKey = mDatabase.child("books").push().getKey();
         Book post = new Book(username, image_link, book, author, publisher, page, info, searchRef);
         Map<String, Object> postValues = post.toMap();
 
-        String bookId = bookKey + "-" + currentYear + currentMonth + currentDay + "-" + bookLowerCase.replace(" ","");
+        String bookId = bookKey + "-" + bookLowerCase.replace(" ","");
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/books/" + bookId, postValues);

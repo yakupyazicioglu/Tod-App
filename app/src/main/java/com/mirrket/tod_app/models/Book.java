@@ -27,6 +27,7 @@ public class Book {
     public Map<String, Boolean> wantToRead = new HashMap<>();
     public Map<String, Boolean> reading = new HashMap<>();
     public Map<String, Integer> rates = new HashMap<>();
+    public Map<String, String> userNotes = new HashMap<>();
 
     public Book() {
         // Default constructor required for calls to DataSnapshot.getValue(Book.class)

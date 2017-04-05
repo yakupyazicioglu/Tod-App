@@ -1,6 +1,7 @@
 package com.mirrket.tod_app.activity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,9 +15,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,6 +50,8 @@ import com.mirrket.tod_app.models.User;
 import com.mirrket.tod_app.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -67,13 +74,16 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     private TabLayout tabLayout;
     private ViewPager mViewPager;
     private String photoUrl;
+    private String userId;
+    private String snackText;
+    private String newUserName;
     private TextView mUserName;
     private Uri fileUri;
     private Uri filePath;
 
     // [START declare_database_ref]
+    private DatabaseReference mDatabase;
     private DatabaseReference mUserRef;
-    private DatabaseReference mUserCommentRef;
     private StorageReference userImgRef;
     private ValueEventListener mUserListener;
     private UploadTask uploadTask;
@@ -85,6 +95,11 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        userId = getIntent().getStringExtra("userId");
+        if (userId == null) {
+            userId = getUid();
+        }
+
         //views
         mToolbar        = (Toolbar) findViewById(R.id.toolbar);
         mTitle          = (TextView) findViewById(R.id.main_textview_title);
@@ -94,12 +109,12 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         profileImg = (ImageView) findViewById(R.id.user_profile_photo);
 
         // [START initialize_database_ref]
-        mUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
-        mUserCommentRef = FirebaseDatabase.getInstance().getReference().child("book-comments");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         userImgRef = FirebaseStorage.getInstance().getReference().child("USER_PROFILE");
         // [END initialize_database_ref]
 
-        mTitle.setTextAppearance(R.style.ToolbarTitle);
+        //mTitle.setTextAppearance(R.style.ToolbarTitle);
         mAppBarLayout.addOnOffsetChangedListener(this);
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
 
@@ -120,7 +135,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                String snackText = getString(R.string.failed_load_post);
+                snackText = getString(R.string.failed_load_post);
                 showSnack(snackText);
                 // [END_EXCLUDE]
             }
@@ -136,9 +151,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-                    new ReadingFragment(),
-                    new ReadedFragment(),
-                    new WTReadFragment(),
+                    new ReadingFragment(userId),
+                    new ReadedFragment(userId),
+                    new WTReadFragment(userId),
             };
             private final String[] mFragmentNames = new String[] {
                     getString(R.string.heading_reading),
@@ -146,8 +161,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                     getString(R.string.heading_wanttoread),
             };
             @Override
-            public Fragment getItem(int position) {
-                return mFragments[position];
+            public Fragment getItem(int position) {return mFragments[position];
             }
             @Override
             public int getCount() {
@@ -158,7 +172,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 Locale l = Locale.getDefault();
                 switch (position) {
                     case 0:
-                        return getString(R.string.heading_reading).toUpperCase(l);
+                        return getString(R.string.heading_reading) + "".toUpperCase(l);
                     case 1:
                         return getString(R.string.heading_readed).toUpperCase(l);
                     case 2:
@@ -168,12 +182,17 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             }
         };
         // Set up the ViewPager with the sections adapter.
+
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        if(userId != getUid())
+            mViewPager.setVisibility(View.INVISIBLE);
+
         profileImg.setOnClickListener(this);
+        mUserName.setOnClickListener(this);
     }
 
     //updated profile picture calling onResume
@@ -253,7 +272,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                     progressDialog.dismiss();
 
                     onResume();
-                    String snackText = getString(R.string.updated_profile_image);
+                    snackText = getString(R.string.updated_profile_image);
                     showSnack(snackText);
                     Log.v("on upload fıle", "download url " + fileUri + " comıng lınk here " + photoUrl);
                 }
@@ -262,7 +281,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             progressDialog.dismiss();
-                            String snackText = getString(R.string.failed_update_img);
+                            snackText = getString(R.string.failed_update_img);
                             showSnack(snackText);
                             FirebaseCrash.report(new Exception("User profile picture problem!"));
                             Log.v("on upload fıle", "fail");
@@ -281,7 +300,34 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    private void showNameDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Kullanıcı adınızı giriniz..");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                newUserName = input.getText().toString().trim();
+                writeUserName(newUserName);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
     private void writeUserImg(final String photoUrl) {
+        final Query commentQuery = getQuery(mDatabase);
+
         mUserRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -291,7 +337,29 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 }
                 else {
                     u.photoUrl = photoUrl;
-                    updateCommentPhoto(photoUrl);
+                }
+                mutableData.setValue(u);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    private void writeUserName(final String newName) {
+        mUserRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                User u = mutableData.getValue(User.class);
+                if (u == null) {
+                    return Transaction.success(mutableData);
+                }
+                else {
+                    u.username = newName;
                 }
                 mutableData.setValue(u);
                 return Transaction.success(mutableData);
@@ -307,8 +375,23 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v == profileImg)
-            showFileChooser();
+        if (v == profileImg){
+            if(userId != getUid()){
+                snackText = getString(R.string.no_permission);
+                showSnack(snackText);
+            }
+            else
+                showFileChooser();
+        }
+        else if(v == mUserName){
+            if(userId != getUid()){
+                snackText = getString(R.string.no_permission);
+                showSnack(snackText);
+            }
+            else
+               showNameDialog();
+        }
+
     }
 
     @Override
@@ -355,29 +438,14 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void updateCommentPhoto(final String photoUrl){
-        Query commentQuery = getQuery(mUserCommentRef);
+    public Query getQuery(DatabaseReference databaseReference) {
 
-        commentQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Comment comment = dataSnapshot.getValue(Comment.class);
-                comment.userPhoto = photoUrl;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
-
-    Query getQuery(DatabaseReference databaseReference) {
-
-        Query searchListsQuery = databaseReference
+        Query userComments = databaseReference
+                .child("book-comments")
                 .orderByChild("uid")
                 .equalTo(getUid());
 
-        return searchListsQuery;
+        return userComments;
     }
 
 }

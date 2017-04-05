@@ -32,10 +32,10 @@ public abstract class ReadListFragment extends BaseFragment {
     // [END define_database_reference]
 
     private FirebaseRecyclerAdapter<Book, BookViewHolder> mAdapter;
-    private EndlessRecyclerViewScrollListener scrollListener;
-    AlertDialog levelDialog;
+    private AlertDialog levelDialog;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    private String userId;
 
     public ReadListFragment() {}
 
@@ -76,7 +76,6 @@ public abstract class ReadListFragment extends BaseFragment {
             @Override
             protected void populateViewHolder(final BookViewHolder viewHolder, final Book model, final int position) {
                 final DatabaseReference postRef = getRef(position);
-
                 // Set click listener for the whole post view
                 final String postKey = postRef.getKey();
 
@@ -113,7 +112,6 @@ public abstract class ReadListFragment extends BaseFragment {
 
     private void moveBookClicked(final String postKey) {
         final DatabaseReference globalPostRef = mDatabase.child("books").child(postKey);
-        final DatabaseReference userRef = mDatabase.child("users").child(getUid());
 
         Resources res = getResources();
         final String[] items = res.getStringArray(R.array.read_list);
@@ -126,19 +124,19 @@ public abstract class ReadListFragment extends BaseFragment {
                 switch (item) {
                     case 0:
                         moveOthers(globalPostRef);
-                        moveToReaded(globalPostRef, userRef, postKey);
+                        moveToReaded(globalPostRef, postKey);
                         String snackText1 = getString(R.string.moved_readed);
                         showSnack(snackText1);
                         break;
                     case 1:
                         moveOthers(globalPostRef);
-                        moveToWTRead(globalPostRef, userRef, postKey);
+                        moveToWTRead(globalPostRef, postKey);
                         String snackText2 = getString(R.string.moved_wtread);
                         showSnack(snackText2);
                         break;
                     case 2:
                         moveOthers(globalPostRef);
-                        moveToReading(globalPostRef, userRef, postKey);
+                        moveToReading(globalPostRef, postKey);
                         String snackText3 = getString(R.string.moved_reading);
                         showSnack(snackText3);
                         break;

@@ -9,14 +9,20 @@ import com.google.firebase.database.Query;
 
 public class WTReadFragment extends ReadListFragment {
 
-    public WTReadFragment() {}
+    private String id;
+
+    public WTReadFragment () {}
+
+    public WTReadFragment(String userId) {
+        id = userId;
+    }
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
 
         Query wantToReadList = databaseReference
                 .child("books")
-                .orderByChild("wantToRead"+"/"+getUid())
+                .orderByChild("wantToRead"+"/"+id)
                 .equalTo(true);
 
         return wantToReadList;

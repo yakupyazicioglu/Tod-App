@@ -27,6 +27,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:alpha=".33">
+
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
@@ -34,59 +42,40 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="@string/app_name"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:textSize="12sp"
+            android:text="Version 1.1.4.5" />
+
         <ImageView
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
             android:background="@drawable/icon_transparent"/>
 
 
         <TextView
+            android:id="@+id/more_app"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:linksClickable="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:autoLink="web"
+            android:gravity="bottom"
             android:layout_marginTop="32dp"
-            android:padding="10dp"
-            android:text="@string/lbl_forgot_pass"
-            android:textSize="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal"
-            android:padding="32dp"
-            android:text="@string/msg_forgot_pass"
-            android:textSize="14dp" />
-
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:focusableInTouchMode="true"
-            android:hint="@string/hint_email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1" />
-
-
-        <!-- Login Button -->
-
-        <Button
-            android:id="@+id/btn_reset_pass"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:text="@string/btn_reset_pass" />
-
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@null"
-            android:text="@string/btn_back" />
+            android:text="@string/more_app" />
 
     </LinearLayout>
 

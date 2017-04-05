@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/userNote"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="top|left"
+        android:hint="@string/hint_book_note_dialog"
+        android:inputType="textMultiLine|textCapSentences"/>
+
+    <Button
+        android:id="@+id/save_note_button"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background"
+        android:layout_margin="5dp"
+        android:textSize="20dp"/>
+
+</LinearLayout>

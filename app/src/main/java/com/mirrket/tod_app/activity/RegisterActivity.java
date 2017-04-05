@@ -57,7 +57,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
-        String con_pass = mConfirmPassField.getText().toString();
 
         /*if(password != con_pass){
             Toast.makeText(getApplicationContext(), "Passwords are different!!", Toast.LENGTH_SHORT).show();
@@ -133,9 +132,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void writeNewUser(String userId, String photoUrl, String username, String email) {
-        User user = new User(photoUrl, username, email);
+        //User user = new User(photoUrl, username, email);
 
-        mDatabase.child("users").child(userId).setValue(user);
+        //mDatabase.child("users").child(userId).setValue(user);
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.mirrket.tod_app.activity;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.SearchView;
@@ -20,6 +22,7 @@ import com.mirrket.tod_app.behaviour.ConnectivityReceiver;
 import com.mirrket.tod_app.behaviour.LockableViewPager;
 import com.mirrket.tod_app.fragment.LastAddedFragment;
 import com.mirrket.tod_app.fragment.TopReadedFragment;
+import com.mirrket.tod_app.fragment.TopReadingFragment;
 import com.mirrket.tod_app.models.Author;
 ;import java.util.Set;
 
@@ -45,6 +48,7 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
             private Fragment[] mFragments = new Fragment[]{
                     new LastAddedFragment(),
                     new TopReadedFragment(),
+                    new TopReadingFragment(),
             };
 
             @Override
@@ -81,25 +85,6 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // Associate searchable configuration with the SearchView
-        /*SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-            public boolean onQueryTextChange(String query) {
-                return true;
-            }
-
-            public boolean onQueryTextSubmit(String query) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                intent.putExtra("query", query);
-                startActivity(intent);
-                return true;
-            }
-        };
-        searchView.setOnQueryTextListener(queryTextListener);*/
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -113,9 +98,6 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
             case R.id.action_new_book:
                 startActivity(new Intent(this, NewBookActivity.class));
                 break;
-            case R.id.action_authors:
-                startActivity(new Intent(this, AuthorsActivity.class));
-                break;
             case R.id.action_new_author:
                 startActivity(new Intent(this, NewAuthorActivity.class));
                 break;
@@ -124,6 +106,9 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
                 break;
             case R.id.action_setting:
                 startActivity(new Intent(this, SettingActivity.class));
+                break;
+            case R.id.action_app:
+                startActivity(new Intent(this, AboutAppActivity.class));
                 break;
             case R.id.itemInSubMenu1:
                 if (!item.isChecked()) item.setChecked(true);
@@ -173,7 +158,6 @@ public class MainActivity extends BaseActivity implements ConnectivityReceiver.C
         // register connection status listener
         ConnectionApplication.getInstance().setConnectivityListener(this);
     }
-
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {

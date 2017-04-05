@@ -35,7 +35,7 @@
             android:layout_height="128dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
-            android:background="@drawable/icon9"/>
+            android:background="@drawable/icon_transparent"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,26 +67,49 @@
                 android:inputType="textPassword"
                 android:maxLines="1" />
 
-
-            <Button
-                android:id="@+id/btn_login"
-                style="?android:textAppearanceSmall"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@color/colorPrimaryDark"
-                android:text="@string/sign_in"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:weightSum="1.0">
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/button_background"
+                    android:textColor="@color/white"
+                    android:text="@string/sign_in"
+                    android:textStyle="bold"
+                    android:layout_weight="0.5"/>
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/button_background"
+                    android:textColor="@color/white"
+                    android:text="@string/register"
+                    android:textStyle="bold"
+                    android:layout_weight="0.5"/>
+            </LinearLayout>
+
 
             <CheckBox
                 android:id="@+id/chk_remember_me"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:buttonTint="@color/colorAccent"
-                android:checked="true"
-                android:text="@string/remember_me"
-                android:textStyle="bold" />
+                android:layout_marginTop="24dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:text="@string/remember_me" />
 
         </LinearLayout>
 
@@ -97,21 +120,8 @@
             android:layout_marginTop="12dp"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="48dp"
             android:background="@null"
             android:text="@string/btn_forgot_password"
-            android:textAllCaps="false"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:background="@null"
-            android:text="@string/btn_link_to_register"
             android:textAllCaps="false"
             android:textSize="15sp" />
     </RelativeLayout>

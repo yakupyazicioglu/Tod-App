@@ -12,11 +12,15 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -34,10 +38,14 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class BookDetailActivity extends BaseActivity implements View.OnClickListener {
+import at.blogc.android.views.ExpandableTextView;
+
+public class BookDetailActivity extends BaseActivity implements View.OnClickListener,
+        View.OnTouchListener, AppBarLayout.OnOffsetChangedListener {
 
     private static final String TAG = "BookDetailActivity";
     public static final String EXTRA_POST_KEY = "book_key";
+    public static final int USER_RATE = 0;
 
     private DatabaseReference mDatabase;
     private DatabaseReference mBookReference;
@@ -46,17 +54,27 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
     private String mBookKey;
     private String bookTitle;
     private String authorTitle;
+    private String userNote;
+    private int userRate;
+    private boolean isShow = false;
+    private int scrollRange = -1;
     private CommentAdapter mAdapter;
 
-    private ImageView mPhoto;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private AppBarLayout mAppBarLayout;
+    private ImageView bookPhoto;
+    private ImageView authorPhoto;
     private TextView mBookView;
     private TextView mBookAuthorView;
     private TextView mPublisherView;
     private TextView mPageView;
-    private TextView mBodyView;
+    private ExpandableTextView mBodyView;
     private EditText mCommentField;
     private Button mCommentButton;
+    private EditText mTakeNote;
+    private TextView mExpand;
     private RecyclerView mCommentsRecycler;
+    private RatingBar mRatingBar;
     private Toolbar mToolbar;
 
     @Override
@@ -67,14 +85,20 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initCollapsingToolbar();
 
         // Get post key from intent
         mBookKey = getIntent().getStringExtra(EXTRA_POST_KEY);
+        bookTitle = getIntent().getStringExtra("book");
+        authorTitle = getIntent().getStringExtra("author");
+
         if (mBookKey == null) {
             throw new IllegalArgumentException("Must pass EXTRA_POST_KEY");
         }
+
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setSubtitle("");
 
         // Initialize Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -82,24 +106,38 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
         mCommentsReference = FirebaseDatabase.getInstance().getReference().child("book-comments").child(mBookKey);
 
         // Initialize Views
-        mPhoto = (ImageView) findViewById(R.id.default_photo);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        bookPhoto = (ImageView) findViewById(R.id.default_photo);
+        authorPhoto = (ImageView) findViewById(R.id.author_photo);
         mBookView = (TextView) findViewById(R.id.book_name);
         mBookAuthorView = (TextView) findViewById(R.id.author_name);
         mPublisherView = (TextView) findViewById(R.id.field_publisher);
         mPageView = (TextView) findViewById(R.id.field_page);
-        mBodyView = (TextView) findViewById(R.id.post_body);
+        mBodyView = (ExpandableTextView) findViewById(R.id.post_body);
+        mExpand = (TextView) findViewById(R.id.expand_text);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
+        mTakeNote = (EditText) findViewById(R.id.userNote);
 
         //COMMENT AREA
         mCommentField = (EditText) findViewById(R.id.field_comment_text);
         mCommentButton = (Button) findViewById(R.id.button_post_comment);
         mCommentsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
+        mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mCommentsRecycler.setHasFixedSize(true);
+
+        // set interpolators for both expanding and collapsing animations
+        mBodyView.setAnimationDuration(1000L);
+        mBodyView.setInterpolator(new OvershootInterpolator());
+        mBodyView.setExpandInterpolator(new OvershootInterpolator());
+        mBodyView.setCollapseInterpolator(new OvershootInterpolator());
 
         //Button setOnClickListeners
         mCommentButton.setOnClickListener(this);
-        mPhoto.setOnClickListener(this);
-
-        mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mCommentsRecycler.setHasFixedSize(true);
+        bookPhoto.setOnClickListener(this);
+        mExpand.setOnClickListener(this);
+        mRatingBar.setOnTouchListener(this);
+        mTakeNote.setOnClickListener(this);
     }
 
     @Override
@@ -117,15 +155,25 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
                         .load(post.coverUrl)
                         .placeholder(R.drawable.ic_no_image)
                         .fit()
-                        .into(mPhoto);
+                        .into(bookPhoto);
                 mBookView.setText(post.book);
                 mBookAuthorView.setText(post.author);
                 mPublisherView.setText(post.publisher);
                 mPageView.setText(post.page);
                 mBodyView.setText(post.book_info);
+                mRatingBar.setRating(post.rating);
 
-                bookTitle = post.book;
-                authorTitle = post.author;
+                if (post.userNotes.get(getUid()) != null) {
+                    userNote = post.userNotes.get(getUid());
+                }
+                else userNote = "";
+
+                mTakeNote.setText(userNote);
+
+                if (post.rates.get(getUid()) != null) {
+                    userRate = post.rates.get(getUid());
+                }
+                else userRate = 0;
             }
 
             @Override
@@ -187,6 +235,24 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
         if (i == R.id.button_post_comment) {
             postComment();
         }
+        if(i == R.id.expand_text){
+            mBodyView.toggle();
+            mExpand.setText(mBodyView.isExpanded() ? R.string.expand_text : R.string.collapse_text);
+        }
+        if(i == R.id.userNote){
+            takeNoteClicked(mBookKey, userNote);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_MODE_CHANGED);
+        }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int i = v.getId();
+
+        if(i == R.id.ratingBar){
+            rateBookClicked(mBookKey, userRate);
+        }
+        return false;
     }
 
     @Override
@@ -249,40 +315,54 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
-    private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        /*if (Math.abs(verticalOffset)-appBarLayout.getTotalScrollRange() == 0)
+        {
+            mToolbar.setTitleTextAppearance(getApplicationContext(),R.style.ToolbarTitle);
+            mToolbar.setSubtitleTextAppearance(getApplicationContext(),R.style.ToolbarSubtitle);
+            mToolbar.setTitle(bookTitle);
+            mToolbar.setSubtitle(authorTitle);
+        }
+        *//*else
+        {
+            mToolbar.setTitle("");
+            mToolbar.setSubtitle("");
+        }*//*
 
-        appBarLayout.setExpanded(true);
-        // hiding & showing the book when include_toolbar expanded & collapsed
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
+        if(verticalOffset == -mCollapsingToolbarLayout.getHeight() + mToolbar.getHeight()){
+            mCollapsingToolbarLayout.setTitleEnabled(true);
+            mToolbar.setTitleTextAppearance(getApplicationContext(),R.style.ToolbarTitle);
+            mToolbar.setSubtitleTextAppearance(getApplicationContext(),R.style.ToolbarSubtitle);
+            mToolbar.setTitle(bookTitle);
+            mToolbar.setSubtitle(authorTitle);
 
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setCollapsedTitleTextAppearance(R.style.CollapsingToolbarTitle);
-                    collapsingToolbar.setTitleEnabled(false);
-                    mToolbar.setTitleTextAppearance(getApplicationContext(),R.style.ToolbarTitle);
-                    mToolbar.setSubtitleTextAppearance(getApplicationContext(),R.style.ToolbarSubtitle);
-                    mToolbar.setTitle(bookTitle);
-                    mToolbar.setSubtitle(authorTitle);
-                    //collapsingToolbar.setTitle(collBarTitle);
-                    isShow = true;
-                } else if (isShow) {
-                    collapsingToolbar.setTitleEnabled(false);
-                    mToolbar.setTitle("");
-                    mToolbar.setSubtitle("");
-                    collapsingToolbar.setTitle("");
-                    isShow = false;
-                }
-            }
-        });
+        }else if(!mToolbar.getTitle().equals("")){
+            mCollapsingToolbarLayout.setTitleEnabled(true);
+            mToolbar.setTitleTextAppearance(getApplicationContext(),R.style.ToolbarTitle);
+            mToolbar.setSubtitleTextAppearance(getApplicationContext(),R.style.ToolbarSubtitle);
+            mToolbar.setTitle(bookTitle);
+            mToolbar.setSubtitle(authorTitle);
+            //mCollapsingToolbarLayout.setTitle(mExpandedTitle);
+        }*/
+        if (scrollRange == -1) {
+            scrollRange = appBarLayout.getTotalScrollRange();
+        }
+        if (scrollRange + verticalOffset == 0) {
+            mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsingToolbarTitle);
+            mCollapsingToolbarLayout.setTitleEnabled(false);
+            mToolbar.setTitleTextAppearance(getApplicationContext(),R.style.ToolbarTitle);
+            mToolbar.setSubtitleTextAppearance(getApplicationContext(),R.style.ToolbarSubtitle);
+            mToolbar.setTitle(bookTitle);
+            mToolbar.setSubtitle(authorTitle);
+            //collapsingToolbar.setTitle(bookTitle);
+            isShow = true;
+        } else if (isShow) {
+            mCollapsingToolbarLayout.setTitleEnabled(false);
+            mToolbar.setTitle("");
+            mToolbar.setSubtitle("");
+            //collapsingToolbar.setTitle("");
+            isShow = false;
+        }
     }
-
 }

@@ -1,6 +1,7 @@
 package com.mirrket.tod_app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.mirrket.tod_app.R;
+import com.mirrket.tod_app.activity.BookDetailActivity;
+import com.mirrket.tod_app.activity.UserProfileActivity;
 import com.mirrket.tod_app.models.Comment;
 import com.mirrket.tod_app.util.CircleTransform;
 import com.mirrket.tod_app.viewholder.CommentViewHolder;
@@ -167,6 +170,24 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
                 onDislikeClicked(mDatabaseReference.child(mCommentIds.get(position)));
             }
         });
+
+        holder.photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, UserProfileActivity.class);
+                intent.putExtra("userId", comment.uid);
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.authorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, UserProfileActivity.class);
+                intent.putExtra("userId", comment.uid);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -180,7 +201,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
         }
     }
 
-    public void onLikeClicked(final DatabaseReference postRef) {
+    private void onLikeClicked(final DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -244,6 +265,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
         });
+    }
+
+    private void gotoUser(DatabaseReference userRef){
+
     }
 
     public String getUid() {

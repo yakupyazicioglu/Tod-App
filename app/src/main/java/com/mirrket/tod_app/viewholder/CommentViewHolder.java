@@ -38,15 +38,5 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
         btn_dislike = (ImageButton) itemView.findViewById(R.id.dislike_comment);
     }
 
-    public void bindToLike(Comment comment, View.OnClickListener likeClickListener) {
-        numLike.setText(String.valueOf(comment.likeCount));
-        btn_like.setOnClickListener(likeClickListener);
-    }
-
-    public void bindToDislike(Comment comment, View.OnClickListener dislikeClickListener) {
-        numDislike.setText(String.valueOf(comment.dislikeCount));
-        btn_dislike.setOnClickListener(dislikeClickListener);
-    }
-
 }
 

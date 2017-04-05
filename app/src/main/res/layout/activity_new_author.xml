@@ -33,15 +33,34 @@
         android:padding="8dp">
 
         <EditText
+            android:id="@+id/field_author_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="48dp"
+            android:hint="Author Photo"
+            android:maxLines="1" />
+
+        <EditText
             android:id="@+id/field_title_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="64dp"
             android:hint="Author Name"
             android:inputType="textCapWords|textPersonName"
             android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/field_author_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginBottom="5dp"
+            android:hint="Author Info"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="10" />
 
 
     </LinearLayout>

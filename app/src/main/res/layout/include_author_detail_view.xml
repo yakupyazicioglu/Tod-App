@@ -12,14 +12,14 @@
         android:padding="4dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/author_photo"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_action_account_circle_40"
                 app:finalHeight="@dimen/image_final_width"
@@ -42,6 +42,30 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Author Name" />
+
+            <at.blogc.android.views.ExpandableTextView
+                android:id="@+id/author_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="10"
+                android:ellipsize="end"
+                app:animation_duration="1000"
+                android:textSize="16sp"
+                tools:text="@string/lorem" />
+
+            <TextView
+                android:id="@+id/expand_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:text="@string/expand_text"
+                android:textSize="12sp"/>
         </LinearLayout>
 
     </RelativeLayout>

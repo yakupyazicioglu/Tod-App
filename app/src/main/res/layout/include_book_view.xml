@@ -13,8 +13,11 @@
 
         <ImageView
             android:id="@+id/photo_iv"
-            android:layout_width="69dp"
-            android:layout_height="99dp"
+            android:layout_width="72dp"
+            android:layout_height="104dp"
+            android:background="@drawable/book_shadow"
+            android:paddingLeft="1dp"
+            android:paddingBottom="1dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_no_image" />
 

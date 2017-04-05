@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-        <style name="AppThemeM" parent="Theme.AppCompat.DayNight.NoActionBar">
-                <!-- Customize your theme here. -->
-                <item name="colorPrimary">@color/colorPrimaryM</item>
-                <item name="colorPrimaryDark">@color/colorPrimaryDarkM</item>
-                <item name="colorAccent">@color/colorPrimaryM</item>
-                <item name="android:navigationBarColor">@color/colorPrimaryM</item>
-                <item name="android:background">@color/colorAccentM</item>
-                <item name="windowActionBar">false</item>
-                <item name="windowNoTitle">true</item>
-        </style>
-
         <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
                 <!-- Customize your theme here. -->
                 <item name="colorPrimary">@color/colorPrimary</item>

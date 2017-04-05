@@ -31,8 +31,8 @@ public class Author {
         HashMap<String, Object> result = new HashMap<>();
         result.put("photoUrl", photoUrl);
         result.put("name", name);
-        result.put("searchRef", searchRef);
         result.put("info", info);
+        result.put("searchRef", searchRef);
         return result;
     }
 }

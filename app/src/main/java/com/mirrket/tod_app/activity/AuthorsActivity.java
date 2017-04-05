@@ -33,7 +33,7 @@ public class AuthorsActivity extends BaseActivity implements SearchView.OnQueryT
     private RecyclerView mRecycler;
     private GridLayoutManager mManager;
     private SearchView searchView;
-    private Query bookQuery;
+    private Query authorQuery;
     private ProgressBar progressBar;
     private int itemCount;
 
@@ -43,7 +43,6 @@ public class AuthorsActivity extends BaseActivity implements SearchView.OnQueryT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authors);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -140,10 +139,10 @@ public class AuthorsActivity extends BaseActivity implements SearchView.OnQueryT
     @Override
     public boolean onQueryTextChange(String newText) {
 
-        bookQuery = getQuery(mDatabase, newText);
+        authorQuery = getQuery(mDatabase, newText);
 
         mAdapter = new FirebaseRecyclerAdapter<Author, AuthorViewHolder>(Author.class, R.layout.item_author,
-                AuthorViewHolder.class, bookQuery) {
+                AuthorViewHolder.class, authorQuery) {
             @Override
             protected void populateViewHolder(final AuthorViewHolder viewHolder, final Author model, final int position) {
                 final DatabaseReference postRef = getRef(position);

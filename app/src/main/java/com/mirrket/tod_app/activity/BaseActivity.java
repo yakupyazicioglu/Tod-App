@@ -2,20 +2,21 @@ package com.mirrket.tod_app.activity;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.RatingBar;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,11 +29,7 @@ import com.google.firebase.database.Transaction;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.mirrket.tod_app.R;
 import com.mirrket.tod_app.models.Book;
-import com.mirrket.tod_app.models.User;
 import com.mirrket.tod_app.viewholder.BookViewHolder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -40,6 +37,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final Integer SELECT_PICTURE = 101;
     public DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     public ProgressDialog mProgressDialog;
+    public int userRate = 0;
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {
@@ -131,49 +129,39 @@ public class BaseActivity extends AppCompatActivity {
 
     public void populateItemDiscover(final BookViewHolder viewHolder, final Book model, final String bookKey){
 
+        if(model.rates.get(getUid()) != null){
+            userRate = model.rates.get(getUid());
+        }
 
-        viewHolder.photoView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int userRate;
+                if (model.rates.get(getUid()) != null) {
+                    userRate = model.rates.get(getUid());
+                }
+                else
+                    userRate = 0;
+
                 // Launch BookDetailActivity
                 Intent intent = new Intent(getApplicationContext(), BookDetailActivity.class);
                 intent.putExtra(BookDetailActivity.EXTRA_POST_KEY, bookKey);
+                intent.putExtra("userRate", userRate);
                 startActivity(intent);
             }
         });
 
-        viewHolder.bookView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Launch BookDetailActivity
-                Intent intent = new Intent(getApplicationContext(), BookDetailActivity.class);
-                intent.putExtra(BookDetailActivity.EXTRA_POST_KEY, bookKey);
-                startActivity(intent);
-            }
-        });
-
-        viewHolder.authorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Launch BookDetailActivity
-                Intent intent = new Intent(getApplicationContext(), BookDetailActivity.class);
-                intent.putExtra(BookDetailActivity.EXTRA_POST_KEY, bookKey);
-                startActivity(intent);
-            }
-        });
-
-        viewHolder.ratingBar.setOnTouchListener(new View.OnTouchListener() {
+        /*viewHolder.ratingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int userRate = 0;
-                if(model.rates.get(getUid()) != null){
+                if (model.rates.get(getUid()) != null) {
                     userRate = model.rates.get(getUid());
                 }
-
                 rateBookClicked(bookKey, userRate);
                 return false;
             }
-        });
+        });*/
 
         // Determine if the current user has liked this post and set UI accordingly
 
@@ -326,28 +314,50 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-    public void ratingClicked(DatabaseReference postRef, final int rate) {
+    public void rateBookClicked(final String postKey, final Integer userRate){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference globalBookRef = mDatabase.child("books").child(postKey);
+        final Dialog rankDialog;
+        final SimpleRatingBar ratingBar;
+
+        rankDialog = new Dialog(this);
+        rankDialog.setContentView(R.layout.ratingbar_dialog);
+        rankDialog.setCancelable(true);
+        ratingBar = (SimpleRatingBar) rankDialog.findViewById(R.id.dialog_ratingbar);
+        ratingBar.setRating(userRate);
+
+        Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int newRate = (int) ratingBar.getRating();
+
+                ratingClicked(globalBookRef, userRate, newRate);
+
+                rankDialog.dismiss();
+            }
+        });
+        //now that the dialog is set up, it's time to show it
+        rankDialog.show();
+    }
+
+    public void ratingClicked(DatabaseReference postRef, final int userRate, final int newRate) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Book p = mutableData.getValue(Book.class);
-                final float rateSum = p.ratedCount * p.rating;
+                float rateSum = p.ratedCount * p.rating;
 
                 if (p == null) {
                     return Transaction.success(mutableData);
                 }
                 if (p.rates.containsKey(getUid())) {
-                    p.rating = (rateSum - p.rating + rate)/p.ratedCount;
-                    p.rates.put(getUid(), rate);
-                }
-                else {
+                    p.rating = (rateSum - userRate + newRate) / p.ratedCount;
+                    p.rates.put(getUid(), newRate);
+                } else {
                     p.ratedCount = p.ratedCount + 1;
-                    if(p.rating == 0)
-                        p.rating = rate;
-                    else {
-                        p.rating = (rateSum + rate)/p.ratedCount;
-                    }
-                    p.rates.put(getUid(), rate);
+                    p.rating = (rateSum + newRate) / p.ratedCount;
+                    p.rates.put(getUid(), newRate);
                 }
                 mutableData.setValue(p);
                 return Transaction.success(mutableData);
@@ -362,32 +372,57 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-    public void rateBookClicked(final String postKey, Integer userRate){
+    public void takeNoteClicked(final String postKey, final String userNote){
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        final DatabaseReference globalPostRef = mDatabase.child("posts").child(postKey);
-        final Dialog rankDialog;
-        final SimpleRatingBar ratingBar;
+        final DatabaseReference globalBookRef = mDatabase.child("books").child(postKey);
+        final Dialog noteDailog;
+        final EditText editText;
+        final Button saveButton;
 
-        rankDialog = new Dialog(this);
-        rankDialog.setContentView(R.layout.ratingbar_dialog);
-        rankDialog.setCancelable(true);
-        ratingBar = (SimpleRatingBar) rankDialog.findViewById(R.id.dialog_ratingbar);
-        ratingBar.setRating(userRate);
+        noteDailog = new Dialog(this);
+        noteDailog.setContentView(R.layout.take_note_dialog);
+        noteDailog.setCancelable(true);
+        editText = (EditText) noteDailog.findViewById(R.id.userNote);
+        editText.setText(userNote);
 
-        Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
-        updateButton.setOnClickListener(new View.OnClickListener() {
+        saveButton = (Button) noteDailog.findViewById(R.id.save_note_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int rated = (int) ratingBar.getRating();
 
-                ratingClicked(globalPostRef, rated);
+                String newUserNote;
+                newUserNote = editText.getText().toString().trim();
+                userNoteClicked(globalBookRef, newUserNote);
 
-                rankDialog.dismiss();
+                noteDailog.dismiss();
             }
         });
         //now that the dialog is set up, it's time to show it
-        rankDialog.show();
+        noteDailog.show();
     }
 
+    public void userNoteClicked(DatabaseReference postRef, final String newNote) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Book p = mutableData.getValue(Book.class);
+                if (p == null) {
+                    return Transaction.success(mutableData);
+                }
+                else {
+                    p.userNotes.put(getUid(), newNote);
+                }
+                mutableData.setValue(p);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
 
 }

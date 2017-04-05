@@ -32,6 +32,8 @@ public class NewAuthorActivity extends BaseActivity implements View.OnClickListe
     // [END declare_database_ref]
 
     private EditText mTitleAuthor;
+    private EditText mAuthorPhoto;
+    private EditText mAuthorInfo;
     private FloatingActionButton mSubmitButton;
 
 
@@ -47,6 +49,8 @@ public class NewAuthorActivity extends BaseActivity implements View.OnClickListe
 
         //views
         mTitleAuthor = (EditText) findViewById(R.id.field_title_author);
+        mAuthorPhoto = (EditText) findViewById(R.id.field_author_link);
+        mAuthorInfo = (EditText) findViewById(R.id.field_author_info);
         mSubmitButton = (FloatingActionButton) findViewById(R.id.fab_submit_post);
 
         mSubmitButton.setOnClickListener(this);
@@ -55,7 +59,9 @@ public class NewAuthorActivity extends BaseActivity implements View.OnClickListe
 
     private void submitPost() {
 
+        final String author_photo = mAuthorPhoto.getText().toString().trim();
         final String author_name = mTitleAuthor.getText().toString().trim();
+        final String author_info = mAuthorInfo.getText().toString().trim();
         final String searchRef = mTitleAuthor.getText().toString().toLowerCase();
 
         // Disable button so there are no multi-posts
@@ -70,9 +76,11 @@ public class NewAuthorActivity extends BaseActivity implements View.OnClickListe
                         // Get user value
                         Author author = dataSnapshot.getValue(Author.class);
 
-                        writeNewAuthor(author_name, searchRef);
+                        writeNewAuthor(author_photo, author_name, author_info, searchRef);
                         // Finish this Activity, back to the stream
                         mTitleAuthor.setText("");
+                        mAuthorInfo.setText("");
+                        mAuthorPhoto.setText("");
                         // [END_EXCLUDE]
                     }
 
@@ -88,22 +96,16 @@ public class NewAuthorActivity extends BaseActivity implements View.OnClickListe
     }
 
     // [START write_fan_out]
-    private void writeNewAuthor(String author_name, String searchRef) {
-
-        final String photo_url = "";
-        final String author_info = "";
-        final String currentYear = new SimpleDateFormat("yy").format(Calendar.getInstance().getTime());
-        final String currentMonth = new SimpleDateFormat("M").format(Calendar.getInstance().getTime());
-        final String currentDay = new SimpleDateFormat("d").format(Calendar.getInstance().getTime());
+    private void writeNewAuthor(String author_photo, String author_name, String author_info, String searchRef) {
 
         String authorKey = mDatabase.child("authors").push().getKey();
-        Author author = new Author(photo_url, author_name, author_info, searchRef);
+        Author author = new Author(author_photo, author_name, author_info, searchRef);
         Map<String, Object> postValues = author.toMap();
 
-        String authorId = authorKey + "-" + currentYear + currentMonth + currentDay + "-" + searchRef.replace(" ", "");
+        String authorId =  authorKey + "-" + searchRef.replace(" ", "");
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/authors/" + authorId.trim(), postValues);
+        childUpdates.put("/authors/" + authorId, postValues);
 
         mDatabase.updateChildren(childUpdates);
     }

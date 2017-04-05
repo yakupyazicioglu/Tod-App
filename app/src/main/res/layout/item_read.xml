@@ -1,94 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="1dp">
+    android:layout_height="wrap_content">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="4dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/photo_iv"
             android:layout_width="32dp"
             android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:padding="2dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_no_image" />
 
-        <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/book_name"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:maxWidth="180dp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="My First Post" />
-
-            <TextView
-                android:id="@+id/author_name"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:maxWidth="180dp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="12sp"
-                tools:text="Author Name" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
+        <include
+            android:id="@+id/include1"
+            layout="@layout/include_book_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_toRightOf="@id/photo_iv"/>
 
-            <TextView
-                android:id="@+id/field_publisher"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="108dp"
-                android:layout_marginTop="4dp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textSize="12sp"
-                tools:text="Publisher" />
+        <include
+            layout="@layout/include_publisher_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/include1"/>
 
-            <TextView
-                android:id="@+id/field_page"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="12sp"
-                tools:text="Page" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/separator_line" />
 
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/btn_read_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right|center"
+            android:src="@drawable/ic_overflow"
+            android:background="?attr/selectableItemBackground"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <ImageButton
-        android:id="@+id/btn_read_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center"
-        android:src="@drawable/ic_overflow"
-        android:background="?attr/selectableItemBackground"/>
 
 </android.support.v7.widget.CardView>

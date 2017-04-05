@@ -2,6 +2,9 @@ package com.mirrket.tod_app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +12,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,27 +31,35 @@ import com.mirrket.tod_app.viewholder.AuthorViewHolder;
 import com.mirrket.tod_app.viewholder.BookViewHolder;
 import com.squareup.picasso.Picasso;
 
+import at.blogc.android.views.ExpandableTextView;
+
 /**
  * Created by yy on 25.03.2017.
  */
 
-public class AuthorDetailActivity extends BaseActivity{
+public class AuthorDetailActivity extends BaseActivity implements View.OnClickListener, AppBarLayout.OnOffsetChangedListener {
 
     private static final String TAG = "AuthorDetailActivity";
     public static final String EXTRA_POST_KEY = "author_key";
 
     private DatabaseReference mDatabase;
     private DatabaseReference mAuthorReference;
+    private DatabaseReference mAuthorReferenceKey;
     private ValueEventListener mBookListener;
     private Query bookQuery;
     private String mAuthorKey;
     private String authorRef;
+    private boolean checkflag = true;
+    boolean isShow = false;
+    int scrollRange = -1;
 
     private FirebaseRecyclerAdapter<Book, BookViewHolder> mAdapter;
+    private TextView mExpand;
     private ImageView mPhoto;
     private TextView mName;
-    private TextView mInfo;
+    private ExpandableTextView mInfo;
     private RecyclerView mBooksRecycler;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private Toolbar mToolbar;
 
     @Override
@@ -57,6 +70,7 @@ public class AuthorDetailActivity extends BaseActivity{
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get book key from intent
@@ -73,10 +87,19 @@ public class AuthorDetailActivity extends BaseActivity{
         // Initialize Views
         mPhoto = (ImageView) findViewById(R.id.author_photo);
         mName = (TextView) findViewById(R.id.author_name);
-        mInfo = (TextView) findViewById(R.id.author_info);
+        mInfo = (ExpandableTextView) findViewById(R.id.author_info);
+        mExpand = (TextView) findViewById(R.id.expand_text);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
+        // set interpolators for both expanding and collapsing animations
+        mInfo.setAnimationDuration(1000L);
+        mInfo.setInterpolator(new OvershootInterpolator());
+        mInfo.setExpandInterpolator(new OvershootInterpolator());
+        mInfo.setCollapseInterpolator(new OvershootInterpolator());
 
         mBooksRecycler = (RecyclerView) findViewById(R.id.recycler_author_books);
         mBooksRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mExpand.setOnClickListener(this);
     }
 
     @Override
@@ -131,7 +154,7 @@ public class AuthorDetailActivity extends BaseActivity{
                 // Set click listener for the whole post view
                 final String bookKey = postRef.getKey();
 
-                populateItemDiscover(viewHolder,model,bookKey);
+                populateItemDiscover(viewHolder, model, bookKey);
 
             }
         };
@@ -157,5 +180,38 @@ public class AuthorDetailActivity extends BaseActivity{
                 .equalTo(authorRef);
 
         return searchListsQuery;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Integer id = v.getId();
+        switch (id) {
+            case R.id.expand_text:
+                mInfo.toggle();
+                mExpand.setText(mInfo.isExpanded() ? R.string.expand_text : R.string.collapse_text);
+        }
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (scrollRange == -1) {
+            scrollRange = appBarLayout.getTotalScrollRange();
+        }
+        if (scrollRange + verticalOffset == 0) {
+            mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsingToolbarTitle);
+            mCollapsingToolbarLayout.setTitleEnabled(true);
+            mToolbar.setTitleTextAppearance(getApplicationContext(),R.style.ToolbarTitle);
+            mToolbar.setSubtitleTextAppearance(getApplicationContext(),R.style.ToolbarSubtitle);
+            mToolbar.setTitle("");
+            mToolbar.setSubtitle("");
+            mCollapsingToolbarLayout.setTitle(authorRef);
+            isShow = true;
+        } else if (isShow) {
+            mCollapsingToolbarLayout.setTitleEnabled(false);
+            mToolbar.setTitle("");
+            mToolbar.setSubtitle("");
+            mCollapsingToolbarLayout.setTitle("");
+            isShow = false;
+        }
     }
 }

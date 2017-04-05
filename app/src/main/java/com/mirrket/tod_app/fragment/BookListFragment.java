@@ -3,6 +3,7 @@ package com.mirrket.tod_app.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,12 +75,12 @@ public abstract class BookListFragment extends BaseFragment {
                 BookViewHolder.class, postsQuery) {
             @Override
             protected void populateViewHolder(final BookViewHolder viewHolder, final Book model, final int position) {
-                final DatabaseReference postRef = getRef(position);
+                final DatabaseReference bookRef = getRef(position);
 
                 // Set click listener for the whole post view
-                final String postKey = postRef.getKey();
+                final String bookKey = bookRef.getKey();
 
-                populateItemDiscover(viewHolder,model,postKey);
+                populateItemDiscover(viewHolder,model,bookKey);
             }
         };
         mRecycler.setAdapter(mAdapter);

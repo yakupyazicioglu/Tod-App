@@ -32,6 +32,7 @@
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:paddingLeft="8dp"
             android:gravity="left|center_vertical"
             android:textAllCaps="false"

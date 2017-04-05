@@ -14,7 +14,7 @@
             android:layout_alignParentLeft="true" />
 
         <include
-            layout="@layout/include_read"
+            layout="@layout/include_read_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

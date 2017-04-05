@@ -21,6 +21,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.mirrket.tod_app.R;
+import com.mirrket.tod_app.activity.AuthorDetailActivity;
 import com.mirrket.tod_app.activity.BookDetailActivity;
 import com.mirrket.tod_app.activity.LoginActivity;
 import com.mirrket.tod_app.models.Book;
@@ -57,49 +58,20 @@ public class BaseFragment extends Fragment {
 
     }
 
-    public void populateItemDiscover(final BookViewHolder viewHolder, final Book model, final String bookKey){
+    public void populateItemDiscover(final BookViewHolder viewHolder, final Book model, final String bookKey) {
 
+        final String book = model.book;
+        final String author = model.author;
 
-        viewHolder.photoView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Launch BookDetailActivity
                 Intent intent = new Intent(getActivity(), BookDetailActivity.class);
                 intent.putExtra(BookDetailActivity.EXTRA_POST_KEY, bookKey);
+                intent.putExtra("book", book);
+                intent.putExtra("author", author);
                 startActivity(intent);
-            }
-        });
-
-        viewHolder.bookView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Launch BookDetailActivity
-                Intent intent = new Intent(getActivity(), BookDetailActivity.class);
-                intent.putExtra(BookDetailActivity.EXTRA_POST_KEY, bookKey);
-                startActivity(intent);
-            }
-        });
-
-        viewHolder.authorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Launch BookDetailActivity
-                Intent intent = new Intent(getActivity(), BookDetailActivity.class);
-                intent.putExtra(BookDetailActivity.EXTRA_POST_KEY, bookKey);
-                startActivity(intent);
-            }
-        });
-
-        viewHolder.ratingBar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int userRate = 0;
-                if(model.rates.get(getUid()) != null){
-                    userRate = model.rates.get(getUid());
-                }
-
-                rateBookClicked(bookKey, userRate);
-                return false;
             }
         });
 
@@ -129,42 +101,33 @@ public class BaseFragment extends Fragment {
         viewHolder.bindToReaded(model, new View.OnClickListener() {
             @Override
             public void onClick(View readView) {
-                // Need to write to both places the post is stored
+                // Need to write to place the post is stored
                 DatabaseReference globalBookRef = mDatabase.child("books").child(bookKey);
-                DatabaseReference userRef = mDatabase.child("users").child(getUid());
 
-                // Run two transactions
+                // Run transactions
                 readedClicked(globalBookRef);
-                //userReadeds(globalBookRef, userRef, postKey);
-                //moveOthers(globalBookRef, userRef, postKey);
             }
         });
 
         viewHolder.bindToWantToRead(model, new View.OnClickListener() {
             @Override
             public void onClick(View wtReadView) {
-                // Need to write to both places the post is stored
+                // Need to write to place the post is stored
                 DatabaseReference globalBookRef = mDatabase.child("books").child(bookKey);
-                DatabaseReference userRef = mDatabase.child("users").child(getUid());
 
-                // Run two transactions
+                // Run transactions
                 wtReadClicked(globalBookRef);
-                //userWantToReads(globalBookRef, userRef, postKey);
-                //moveOthers(globalPostRef, userRef, postKey);
             }
         });
 
         viewHolder.bindToReading(model, new View.OnClickListener() {
             @Override
             public void onClick(View readingView) {
-                // Need to write to both places the post is stored
+                // Need to write to place the post is stored
                 DatabaseReference globalBookRef = mDatabase.child("books").child(bookKey);
-                DatabaseReference userRef = mDatabase.child("users").child(getUid());
 
-                // Run two transactions
+                // Run transactions
                 readingClicked(globalBookRef);
-                //userReadings(globalBookRef, userRef, postKey);
-                //moveOthers(globalPostRef, userRef, postKey);
             }
         });
     }
@@ -254,28 +217,23 @@ public class BaseFragment extends Fragment {
         });
     }
 
-    public void ratingClicked(DatabaseReference postRef, final int rate) {
+    public void ratingClicked(DatabaseReference postRef, final int userRate, final int newRate) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Book p = mutableData.getValue(Book.class);
-                final float rateSum = p.ratedCount * p.rating;
+                float rateSum = p.ratedCount * p.rating;
 
                 if (p == null) {
                     return Transaction.success(mutableData);
                 }
                 if (p.rates.containsKey(getUid())) {
-                    p.rating = (rateSum - p.rating + rate)/p.ratedCount;
-                    p.rates.put(getUid(), rate);
-                }
-                else {
+                    p.rating = (rateSum - userRate + newRate) / p.ratedCount;
+                    p.rates.put(getUid(), newRate);
+                } else {
                     p.ratedCount = p.ratedCount + 1;
-                    if(p.rating == 0)
-                        p.rating = rate;
-                    else {
-                        p.rating = (rateSum + rate)/p.ratedCount;
-                    }
-                    p.rates.put(getUid(), rate);
+                    p.rating = (rateSum + newRate) / p.ratedCount;
+                    p.rates.put(getUid(), newRate);
                 }
                 mutableData.setValue(p);
                 return Transaction.success(mutableData);
@@ -290,168 +248,76 @@ public class BaseFragment extends Fragment {
         });
     }
 
-    public void rateBookClicked(final String postKey, Integer userRate){
-        final DatabaseReference globalBookRef = mDatabase.child("books").child(postKey);
-        final Dialog rankDialog;
-        final SimpleRatingBar ratingBar;
-
-        rankDialog = new Dialog(getContext());
-        rankDialog.setContentView(R.layout.ratingbar_dialog);
-        rankDialog.setCancelable(true);
-        ratingBar = (SimpleRatingBar) rankDialog.findViewById(R.id.dialog_ratingbar);
-        ratingBar.setRating(userRate);
-
-        Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
-        updateButton.setOnClickListener(new View.OnClickListener() {
+    public void moveToReaded(final DatabaseReference postRef, final String key) {
+        postRef.runTransaction(new Transaction.Handler() {
             @Override
-            public void onClick(View v) {
-                final int rated = (int) ratingBar.getRating();
+            public Transaction.Result doTransaction(MutableData mutableData1) {
+                Book post = mutableData1.getValue(Book.class);
+                Map<String, Object> childUpdates = new HashMap<>();
+                Map<String, Boolean> postValues = new HashMap<>();
+                postValues.put(getUid(), true);
 
-                ratingClicked(globalBookRef, rated);
-
-                rankDialog.dismiss();
-            }
-        });
-        //now that the dialog is set up, it's time to show it
-        rankDialog.show();
-    }
-
-    public void moveToReaded(final DatabaseReference postRef, final DatabaseReference userRef, final String key) {
-        userRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                final User u = mutableData.getValue(User.class);
-
-                if (u == null) {
-                    return Transaction.success(mutableData);
+                if(!post.readed.containsKey(getUid())){
+                    childUpdates.put("/books/" + key + "/readed/", postValues);
+                    childUpdates.put("/books/" + key + "/readedCount/", post.readedCount + 1);
                 }
 
-                postRef.runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(MutableData mutableData1) {
-                        Book post = mutableData1.getValue(Book.class);
-                        Map<String, Object> readValues = post.toProfile();
-                        Map<String, Object> childUpdates = new HashMap<>();
-                        Map<String, Boolean> postValues = new HashMap<>();
-                        postValues.put(getUid(), true);
+                mDatabase.updateChildren(childUpdates);
+                return Transaction.success(mutableData1);
+            }
 
-                        childUpdates.put("/books/" + key + "/readed/", postValues);
-                        childUpdates.put("/books/" + key + "/readedCount/", post.readedCount + 1);
-                        //childUpdates.put("/users/" + getUid() + "/readed/" + key, readValues);
-                        //childUpdates.put("/users/" + getUid() + "/readeds/", u.readeds + 1);
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+            }
+        });
 
-                        mDatabase.updateChildren(childUpdates);
-                        return Transaction.success(mutableData1);
-                    }
+    }
 
-                    @Override
-                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {}
-                });
+    public void moveToWTRead(final DatabaseReference postRef, final String key) {
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData1) {
+                Book post = mutableData1.getValue(Book.class);
+                Map<String, Object> childUpdates = new HashMap<>();
+                Map<String, Boolean> postValues = new HashMap<>();
+                postValues.put(getUid(), true);
 
-                mutableData.setValue(u);
-                return Transaction.success(mutableData);
+                if(!post.wantToRead.containsKey(getUid())){
+                    childUpdates.put("/books/" + key + "/wantToRead/", postValues);
+                    childUpdates.put("/books/" + key + "/wantToReadCount/", post.wantToReadCount + 1);
+                }
+
+                mDatabase.updateChildren(childUpdates);
+                return Transaction.success(mutableData1);
             }
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
-                // Transaction completed
-                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
         });
     }
 
-    public void moveToWTRead(final DatabaseReference postRef, final DatabaseReference userRef, final String key) {
-        userRef.runTransaction(new Transaction.Handler() {
+    public void moveToReading(final DatabaseReference postRef, final String key) {
+        postRef.runTransaction(new Transaction.Handler() {
             @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                final User u = mutableData.getValue(User.class);
+            public Transaction.Result doTransaction(MutableData mutableData1) {
+                Book post = mutableData1.getValue(Book.class);
+                Map<String, Object> childUpdates = new HashMap<>();
+                Map<String, Boolean> postValues = new HashMap<>();
+                postValues.put(getUid(), true);
 
-                if (u == null) {
-                    return Transaction.success(mutableData);
+                if(!post.reading.containsKey(getUid())){
+                    childUpdates.put("/books/" + key + "/reading/", postValues);
+                    childUpdates.put("/books/" + key + "/readingCount/", post.readingCount + 1);
                 }
 
-                postRef.runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(MutableData mutableData1) {
-                        Book post = mutableData1.getValue(Book.class);
-                        Map<String, Object> readValues = post.toProfile();
-                        Map<String, Object> childUpdates = new HashMap<>();
-                        Map<String, Boolean> postValues = new HashMap<>();
-                        postValues.put(getUid(), true);
-
-                        childUpdates.put("/books/" + key + "/wantToRead/", postValues);
-                        childUpdates.put("/books/" + key + "/wantToReadCount/", post.wantToReadCount + 1);
-                        //childUpdates.put("/users/" + getUid() + "/wantToRead/" + key, readValues);
-                        //childUpdates.put("/users/" + getUid() + "/wanttoreads/", u.wanttoreads + 1);
-
-                        mDatabase.updateChildren(childUpdates);
-                        return Transaction.success(mutableData1);
-                    }
-
-                    @Override
-                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-                    }
-                });
-
-                mutableData.setValue(u);
-                return Transaction.success(mutableData);
+                mDatabase.updateChildren(childUpdates);
+                return Transaction.success(mutableData1);
             }
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-                // Transaction completed
-                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
-            }
-        });
-    }
-
-    public void moveToReading(final DatabaseReference postRef, final DatabaseReference userRef, final String key) {
-        userRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                final User u = mutableData.getValue(User.class);
-
-                if (u == null) {
-                    return Transaction.success(mutableData);
-                }
-
-                postRef.runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(MutableData mutableData1) {
-                        Book post = mutableData1.getValue(Book.class);
-                        Map<String, Object> readValues = post.toProfile();
-                        Map<String, Object> childUpdates = new HashMap<>();
-                        Map<String, Boolean> postValues = new HashMap<>();
-                        postValues.put(getUid(), true);
-
-                        childUpdates.put("/books/" + key + "/reading/", postValues);
-                        childUpdates.put("/books/" + key + "/readingCount/", post.readingCount + 1);
-                        //childUpdates.put("/users/" + getUid() + "/reading/" + key, readValues);
-                        //childUpdates.put("/users/" + getUid() + "/readings/", u.readings+ 1);
-
-                        mDatabase.updateChildren(childUpdates);
-                        return Transaction.success(mutableData1);
-                    }
-
-                    @Override
-                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-                    }
-                });
-
-
-                mutableData.setValue(u);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-                // Transaction completed
-                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
         });
     }

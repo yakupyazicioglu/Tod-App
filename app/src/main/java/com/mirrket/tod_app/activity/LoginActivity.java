@@ -21,13 +21,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mirrket.tod_app.R;
+import com.mirrket.tod_app.models.User;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    private String email,password;
+    private String email, password;
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
 
@@ -62,7 +63,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginPrefsEditor = loginPreferences.edit();
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
 
-        if (saveLogin == true) {
+        if (saveLogin) {
             mEmailField.setText(loginPreferences.getString("email", email));
             mPasswordField.setText(loginPreferences.getString("password", password));
             mRememberMe.setChecked(true);
@@ -91,16 +92,54 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     }
 
-    private void signInEmail(){
+    private void signInEmail() {
         if (!validateForm()) {
             return;
         }
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEmailField.getWindowToken(), 0);
+
+        showProgressDialog();
         email = mEmailField.getText().toString();
         password = mPasswordField.getText().toString();
 
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mEmailField.getWindowToken(), 0);
+        if (mRememberMe.isChecked()) {
+            loginPrefsEditor.putBoolean("saveLogin", true);
+            loginPrefsEditor.putString("email", email);
+            loginPrefsEditor.putString("password", password);
+            loginPrefsEditor.commit();
+        } else {
+            loginPrefsEditor.clear();
+            loginPrefsEditor.commit();
+        }
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
+                        hideProgressDialog();
+
+                        if (task.isSuccessful()) {
+                            signInSuccess(task.getResult().getUser());
+                        } else {
+                            String snackText = getString(R.string.failed_sign_in);
+                            showSnack(snackText);
+                        }
+                    }
+                });
+    }
+
+    private void signUpEmail() {
+        Log.d(TAG, "register");
+
+        if (!validateForm()) {
+            return;
+        }
+
+        String email = mEmailField.getText().toString();
+        String password = mPasswordField.getText().toString();
 
         if (mRememberMe.isChecked()) {
             loginPrefsEditor.putBoolean("saveLogin", true);
@@ -113,12 +152,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
 
         showProgressDialog();
-
-        mAuth.signInWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
+                        Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
 
                         if (task.isSuccessful()) {
@@ -137,26 +175,48 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (TextUtils.isEmpty(mEmailField.getText().toString())) {
             mEmailField.setError(required);
             result = false;
-        }
-        else {
+        } else {
             mEmailField.setError(null);
         }
 
         if (TextUtils.isEmpty(mPasswordField.getText().toString())) {
             mPasswordField.setError(required);
             result = false;
-        }
-        else {
+        } else {
             mPasswordField.setError(null);
         }
 
         return result;
     }
 
+    private void signInSuccess(FirebaseUser user) {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
+    }
+
     private void onAuthSuccess(FirebaseUser user) {
+        String username = usernameFromEmail(user.getEmail());
+
+        // Write new user
+        writeNewUser(user.getUid(), username, user.getEmail());
+
         // Go to MainActivity
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
+    }
+
+    private void writeNewUser(String userId, String username, String email) {
+        User user = new User(username, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
+    private String usernameFromEmail(String email) {
+        if (email.contains("@")) {
+            return email.split("@")[0];
+        } else {
+            return email;
+        }
     }
 
 
@@ -167,10 +227,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             signInEmail();
         }
         if (i == R.id.btn_forgot_password) {
-            startActivity(new Intent(this,ResetPassActivity.class));
+            startActivity(new Intent(this, ResetPassActivity.class));
         }
         if (i == R.id.btn_register) {
-            startActivity(new Intent(this,RegisterActivity.class));
+            signUpEmail();
         }
     }
 

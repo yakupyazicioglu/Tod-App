@@ -30,7 +30,7 @@
         android:text="@string/vote_book"
         android:focusable="false"
         android:textColor="@color/white"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button_background"
         android:layout_margin="5dp"
         android:textSize="20dp"/>
 
