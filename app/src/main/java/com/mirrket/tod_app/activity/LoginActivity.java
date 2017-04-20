@@ -206,7 +206,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void writeNewUser(String userId, String username, String email) {
-        User user = new User(username, email);
+        User user = new User(username, email, "Default Picture");
 
         mDatabase.child("users").child(userId).setValue(user);
     }

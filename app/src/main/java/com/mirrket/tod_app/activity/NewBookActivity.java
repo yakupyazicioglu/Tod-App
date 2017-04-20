@@ -12,12 +12,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirrket.tod_app.R;
 import com.mirrket.tod_app.models.Book;
+import com.mirrket.tod_app.models.Category;
 import com.mirrket.tod_app.models.User;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +46,7 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
     private EditText mPublisher;
     private EditText mPage;
     private EditText mBodyField;
+    private EditText mCategory;
     private FloatingActionButton mSubmitButton;
 
 
@@ -65,6 +68,7 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
         mTitleAuthor = (EditText) findViewById(R.id.field_title_author);
         mPublisher = (EditText) findViewById(R.id.field_publisher);
         mPage = (EditText) findViewById(R.id.field_page);
+        mCategory = (EditText) findViewById(R.id.field_category);
         mSubmitButton = (FloatingActionButton) findViewById(R.id.fab_submit_post);
 
         mSubmitButton.setOnClickListener(this);
@@ -80,9 +84,10 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
         final String cover = mCoverUrl.getText().toString().trim();
         final String title = mTitleBook.getText().toString().trim();
         final String title_author = mTitleAuthor.getText().toString().trim();
-        final String publisher = mPublisher.getText().toString().trim();
+        final String publisher = mPublisher.getText().toString().toUpperCase().trim();
         final String page = mPage.getText().toString();
         final String body = mBodyField.getText().toString().trim();
+        final String category = mCategory.getText().toString().trim();
         final String searchRef = title.toLowerCase() + " - " + title_author.toLowerCase().trim();
 
         // Disable button so there are no multi-posts
@@ -107,7 +112,7 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
                             showSnack(snackText);
                         } else {
                             // Write new post
-                            writeNewPost(user.username, cover, title, title_author, publisher, page, body, searchRef);
+                            writeNewPost(cover, title, title_author, publisher, page, body, category, searchRef);
                         }
 
                         // Finish this Activity, back to the stream
@@ -172,21 +177,32 @@ public class NewBookActivity extends BaseActivity implements View.OnClickListene
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String username, String image_link,
-                              String book, String author, String publisher,
-                              String page, String info,  String searchRef) {
+    private void writeNewPost(String image_link, String book, String author, String publisher,
+                              String page, String info, String category, String searchRef) {
 
+        Category category1 = new Category();
         String bookLowerCase = book.toLowerCase();  
         String bookKey = mDatabase.child("books").push().getKey();
-        Book post = new Book(username, image_link, book, author, publisher, page, info, searchRef);
+        Book post = new Book(image_link, book, author, publisher, page, info, category, searchRef);
         Map<String, Object> postValues = post.toMap();
 
         String bookId = bookKey + "-" + bookLowerCase.replace(" ","");
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/books/" + bookId, postValues);
+        //childUpdates.put("/categories/" + getCategory(mDatabase,category), category1.itemCount + 1);
 
         mDatabase.updateChildren(childUpdates);
+    }
+
+    Query getCategory(DatabaseReference databaseReference, String search) {
+
+        Query searchListsQuery = databaseReference
+                .child("categories")
+                .orderByChild("category_name")
+                .equalTo(search);
+
+        return searchListsQuery;
     }
 
     @Override

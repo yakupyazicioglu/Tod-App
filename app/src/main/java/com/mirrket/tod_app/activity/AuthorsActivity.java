@@ -34,8 +34,6 @@ public class AuthorsActivity extends BaseActivity implements SearchView.OnQueryT
     private GridLayoutManager mManager;
     private SearchView searchView;
     private Query authorQuery;
-    private ProgressBar progressBar;
-    private int itemCount;
 
     String query;
 
@@ -43,13 +41,13 @@ public class AuthorsActivity extends BaseActivity implements SearchView.OnQueryT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authors);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mRecycler = (RecyclerView) findViewById(R.id.author_list);
         searchView = (SearchView) findViewById(R.id.search_author);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         mManager = new GridLayoutManager(this,4);
         mRecycler.setHasFixedSize(true);
@@ -64,36 +62,13 @@ public class AuthorsActivity extends BaseActivity implements SearchView.OnQueryT
     @Override
     protected void onStart() {
         super.onStart();
-
         onQueryTextChange("");
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        itemCount = mRecycler.getChildCount();
-
-       /* new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                if (itemCount > 0){
-                    progressBar.setVisibility(View.GONE);
-                }
-                else
-                {
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-            }
-        }, 2222);*/
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_authors, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -101,12 +76,6 @@ public class AuthorsActivity extends BaseActivity implements SearchView.OnQueryT
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         switch (i) {
-            case R.id.action_profile:
-                startActivity(new Intent(this, UserProfileActivity.class));
-                break;
-            case R.id.action_setting:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
             case R.id.itemAz:
                 if (!item.isChecked()) item.setChecked(true);
                 mManager.setReverseLayout(false);

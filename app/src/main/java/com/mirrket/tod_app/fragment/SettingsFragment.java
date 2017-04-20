@@ -1,13 +1,17 @@
-package com.mirrket.tod_app.activity;
+package com.mirrket.tod_app.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,12 +25,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.mirrket.tod_app.R;
+import com.mirrket.tod_app.activity.LoginActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class SettingActivity extends BaseActivity {
+public class SettingsFragment extends BaseFragment {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    private String mParam1;
+    private String mParam2;
+
+    private OnFragmentInteractionListener mListener;
+
     private static final String TAG = "SettingActivity";
     private Button btnRemoveUser, signOut;
     private FirebaseAuth.AuthStateListener authListener;
@@ -34,13 +47,33 @@ public class SettingActivity extends BaseActivity {
     private FirebaseAuth auth;
     private Toolbar mToolbar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+    public SettingsFragment() {
+        // Required empty public constructor
+    }
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+    public static SettingsFragment newInstance(String param1, String param2) {
+        SettingsFragment fragment = new SettingsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        final View result=inflater.inflate(R.layout.fragment_settings, container, false);
 
         auth = FirebaseAuth.getInstance();
         mDatabase= FirebaseDatabase.getInstance().getReference().child("users").child(getUid());
@@ -55,19 +88,18 @@ public class SettingActivity extends BaseActivity {
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity
-                    startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-                    finish();
+                    startActivity(new Intent(getContext(), LoginActivity.class));
                 }
             }
         };
 
-        btnRemoveUser = (Button) findViewById(R.id.remove_user_button);
-        signOut = (Button) findViewById(R.id.sign_out);
+        btnRemoveUser = (Button) result.findViewById(R.id.remove_user_button);
+        signOut = (Button) result.findViewById(R.id.sign_out);
 
         btnRemoveUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(SettingActivity.this,R.style.DialogTheme);
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(),R.style.DialogTheme);
                 builder1.setMessage(R.string.delete_account);
                 builder1.setCancelable(true);
 
@@ -81,8 +113,7 @@ public class SettingActivity extends BaseActivity {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
                                                         deleteUserRef();
-                                                        startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-                                                        finish();
+                                                        startActivity(new Intent(getContext(), LoginActivity.class));
                                                     } else {
                                                         String snackText = getString(R.string.failed_delete_acoount);
                                                         showSnack(snackText);
@@ -113,11 +144,13 @@ public class SettingActivity extends BaseActivity {
             }
         });
 
+        return result;
     }
 
     //sign out method
     public void signOut() {
         auth.signOut();
+        startActivity(new Intent(getContext(), LoginActivity.class));
     }
 
     private void deleteUserRef(){
@@ -141,22 +174,31 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
     }
 }

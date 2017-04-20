@@ -1,7 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.MainActivity">
+    tools:context=".fragment.AuthorsFragment">
+
+    <item
+        android:id="@+id/menu_item_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        app:showAsAction="always"
+        android:title="@string/search_author">
+    </item>
 
     <item
         android:id="@+id/action_sort"
@@ -23,18 +31,4 @@
             </group>
         </menu>
     </item>
-
-    <item
-        android:id="@+id/action_profile"
-        android:orderInCategory="100"
-        android:title="@string/menu_item_profile"
-        android:visible="true"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_setting"
-        android:orderInCategory="101"
-        android:title="@string/menu_item_setting"
-        android:visible="true"
-        app:showAsAction="never" />
 </menu>

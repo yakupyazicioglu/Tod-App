@@ -74,6 +74,16 @@
             android:maxLines="1" />
 
         <EditText
+            android:id="@+id/field_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginBottom="5dp"
+            android:hint="Category"
+            android:inputType="textCapWords|textPersonName"
+            android:maxLines="1" />
+
+        <EditText
             android:id="@+id/field_page"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

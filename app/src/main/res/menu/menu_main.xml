@@ -43,25 +43,10 @@
         android:visible="false"
         app:showAsAction="never" />
 
-
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/action_new_category"
         android:orderInCategory="100"
-        android:title="@string/menu_item_profile"
-        android:visible="true"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_setting"
-        android:orderInCategory="101"
-        android:title="@string/menu_item_setting"
-        android:visible="true"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_app"
-        android:orderInCategory="101"
-        android:title="@string/menu_item_app"
-        android:visible="true"
+        android:title="New Category"
+        android:visible="false"
         app:showAsAction="never" />
 </menu>

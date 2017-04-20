@@ -49,6 +49,7 @@ public class AuthorDetailActivity extends BaseActivity implements View.OnClickLi
     private Query bookQuery;
     private String mAuthorKey;
     private String authorRef;
+    private String authorName;
     private boolean checkflag = true;
     boolean isShow = false;
     int scrollRange = -1;
@@ -121,6 +122,7 @@ public class AuthorDetailActivity extends BaseActivity implements View.OnClickLi
                         .into(mPhoto);
                 mName.setText(author.name);
                 mInfo.setText(author.info);
+                authorName = author.name;
             }
 
             @Override
@@ -202,15 +204,12 @@ public class AuthorDetailActivity extends BaseActivity implements View.OnClickLi
             mCollapsingToolbarLayout.setTitleEnabled(true);
             mToolbar.setTitleTextAppearance(getApplicationContext(),R.style.ToolbarTitle);
             mToolbar.setSubtitleTextAppearance(getApplicationContext(),R.style.ToolbarSubtitle);
-            mToolbar.setTitle("");
-            mToolbar.setSubtitle("");
+            mToolbar.setTitle(authorName);
             mCollapsingToolbarLayout.setTitle(authorRef);
             isShow = true;
         } else if (isShow) {
             mCollapsingToolbarLayout.setTitleEnabled(false);
             mToolbar.setTitle("");
-            mToolbar.setSubtitle("");
-            mCollapsingToolbarLayout.setTitle("");
             isShow = false;
         }
     }

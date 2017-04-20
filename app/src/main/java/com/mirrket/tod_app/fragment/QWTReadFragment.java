@@ -7,24 +7,24 @@ import com.google.firebase.database.Query;
  * Created by yy on 05.03.2017.
  */
 
-public class ReadingFragment extends ReadListFragment {
+public class QWTReadFragment extends ReadListFragment {
 
     private String id;
 
-    public ReadingFragment () {}
+    public QWTReadFragment() {}
 
-    public ReadingFragment(String userId) {
+    public QWTReadFragment(String userId) {
         id = userId;
     }
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
 
-        Query readingList = databaseReference
+        Query wantToReadList = databaseReference
                 .child("books")
-                .orderByChild("reading"+"/"+id)
+                .orderByChild("wantToRead"+"/"+id)
                 .equalTo(true);
 
-        return readingList;
+        return wantToReadList;
     }
 }

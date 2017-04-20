@@ -7,9 +7,9 @@ import com.google.firebase.database.Query;
  * Created by yy on 22.02.2017.
  */
 
-public class LastAddedFragment extends BookListFragment {
+public class QLastAddedFragment extends BookListFragment {
 
-    public LastAddedFragment() {}
+    public QLastAddedFragment() {}
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {

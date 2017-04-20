@@ -27,11 +27,9 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     private DatabaseReference mDatabase;
 
     private FirebaseRecyclerAdapter<Book, BookViewHolder> mAdapterBook;
-    private FirebaseRecyclerAdapter<Author, AuthorViewHolder> mAdapterAuthor;
     private RecyclerView mRecyclerBook, mRecyclerAuthor;
     private LinearLayoutManager mManagerLinear;
-    private GridLayoutManager mManagerGrid;
-    private Query bookQuery, authorQuery;
+    private Query bookQuery;
     private SearchView searchView;
 
     @Override
@@ -40,15 +38,11 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         setContentView(R.layout.activity_search);
 
         mRecyclerBook = (RecyclerView) findViewById(R.id.book_search_list);
-        mRecyclerAuthor = (RecyclerView) findViewById(R.id.author_search_list);
         searchView = (SearchView) findViewById(R.id.search_book);
 
         mManagerLinear = new LinearLayoutManager(this);
-        mManagerGrid = new GridLayoutManager(this,4);
         mRecyclerBook.setHasFixedSize(true);
         mRecyclerBook.setLayoutManager(mManagerLinear);
-        mRecyclerAuthor.setHasFixedSize(true);
-        mRecyclerAuthor.setLayoutManager(mManagerGrid);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.keepSynced(true);
@@ -62,12 +56,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
         onQueryTextChange("");
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //fullScreenCall();
     }
 
     @Override
@@ -87,7 +75,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     public boolean onQueryTextChange(String newText) {
 
         bookQuery = getBook(mDatabase, newText);
-        authorQuery = getAuthor(mDatabase, newText);
 
         mAdapterBook = new FirebaseRecyclerAdapter<Book, BookViewHolder>(Book.class, R.layout.item_discover,
                 BookViewHolder.class, bookQuery) {
@@ -103,33 +90,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
             }
         };
 
-        mAdapterAuthor = new FirebaseRecyclerAdapter<Author, AuthorViewHolder>(Author.class, R.layout.item_author,
-                AuthorViewHolder.class, authorQuery) {
-            @Override
-            protected void populateViewHolder(final AuthorViewHolder viewHolder, final Author model, final int position) {
-                final DatabaseReference postRef = getRef(position);
-
-                // Set click listener for the whole post view
-                final String authorKey = postRef.getKey();
-                final String authorRef = model.name;
-
-                viewHolder.photoUrl.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Launch BookDetailActivity
-                        Intent intent = new Intent(getApplicationContext(), AuthorDetailActivity.class);
-                        intent.putExtra(AuthorDetailActivity.EXTRA_POST_KEY, authorKey);
-                        intent.putExtra("authorRef",authorRef);
-                        startActivity(intent);
-                    }
-                });
-
-                viewHolder.bindToPost(model);
-
-            }
-        };
-
-        mRecyclerAuthor.setAdapter(mAdapterAuthor);
         mRecyclerBook.setAdapter(mAdapterBook);
         return true;
     }
@@ -141,16 +101,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
                 .orderByChild("searchRef")
                 .startAt(search)
                 .limitToFirst(100);
-
-        return searchListsQuery;
-    }
-
-    Query getAuthor(DatabaseReference databaseReference, String search) {
-
-        Query searchListsQuery = databaseReference
-                .child("authors")
-                .orderByChild("searchRef")
-                .startAt(search);
 
         return searchListsQuery;
     }

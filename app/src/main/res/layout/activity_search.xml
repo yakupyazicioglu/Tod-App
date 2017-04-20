@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:contextClickable="true"
             app:iconifiedByDefault="false"
-            app:defaultQueryHint="@string/search_hint"
-            android:queryHint="@string/search_hint"/>
+            app:defaultQueryHint="@string/search_book"
+            android:queryHint="@string/search_book"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

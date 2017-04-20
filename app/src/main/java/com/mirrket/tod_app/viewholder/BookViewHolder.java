@@ -34,12 +34,6 @@ public class BookViewHolder extends RecyclerView.ViewHolder {
     public TextView numReadingsView;
     public RatingBar ratingBar;
     public ImageButton overflow;
-    //public TextView authorView;
-    //public ImageView starView;
-    //public ImageButton overflow;
-    //public TextView numStarsView;
-    //public TextView numRateView;
-    //public TextView dateView;
 
     public BookViewHolder(View itemView) {
         super(itemView);
@@ -58,12 +52,6 @@ public class BookViewHolder extends RecyclerView.ViewHolder {
         infoView = (TextView) itemView.findViewById(R.id.post_body);
         ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
         overflow = (ImageButton) itemView.findViewById(R.id.btn_read_info);
-        //authorView = (TextView) itemView.findViewById(R.id.post_author);
-        //starView = (ImageView) itemView.findViewById(R.id.star);
-        //overflow = (ImageButton) itemView.findViewById(R.id.overflow);
-        //numStarsView = (TextView) itemView.findViewById(R.id.post_num_stars);
-        //numRateView = (TextView) itemView.findViewById(R.id.rate_num);
-        //dateView = (TextView) itemView.findViewById(R.id.date_title);
     }
 
     public void bindToPost(Book post) {

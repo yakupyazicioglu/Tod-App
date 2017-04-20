@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name">Tod</string>
 
+    <string name="donate_video">ca-app-pub-4823007655976335/9197631201</string>
+    <string name="donate_banner">ca-app-pub-4823007655976335/2453093604</string>
+    <string name="donate_gecis">ca-app-pub-4823007655976335/5406560006</string>
+
     <string name="title_activity_search">Search</string>
     <string name="title_activity_new_post">New Post</string>
     <string name="title_activity_settings">Settings</string>
@@ -9,7 +13,8 @@
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">Login</string>
 
-    <string name="search_hint">book, author..</string>
+    <string name="search_book">Search Book..</string>
+    <string name="search_author">Search Author..</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec condimentum ante, quis mattis mi. Proin ut rhoncus libero, ac euismod neque. Ut suscipit, enim a facilisis consequat, orci lacus venenatis orci, at ultricies orci nulla sed ex. In condimentum viverra velit, eget feugiat libero imperdiet vel. Aenean pretium, lectus vitae bibendum bibendum, diam turpis convallis eros, quis tristique leo sapien at ipsum. Praesent eu odio id nulla lobortis auctor.</string>
     <string name="hint_comment">Write about book..</string>
     <string name="comment_text">Send</string>
@@ -94,6 +99,7 @@
     <string name="moved_reading">Moved to Reading</string>
     <string name="moved_wtread">Moved to Want to Read</string>
     <string name="removed_from_list">Removed from List</string>
+    <string name="thank_for_donate">Thanks for support!</string>
 
     <!-- short book comment -->
     <string name="lates_added">Latest Added</string>
@@ -110,4 +116,29 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="more_app">For more Mirrket App</string>
+    <string name="input_user_name">New user name..</string>
+    <string name="null_user_name">Username can not be blank!</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_home">Books</string>
+    <string name="nav_authors">Authors</string>
+    <string name="nav_categories">Categories</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_others">Others</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Books</item>
+        <item>Authors</item>
+        <item>Categories</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string name="activity_title_about_us">About Us</string>
+    <string name="activity_title_donate">Donate</string>
 </resources>

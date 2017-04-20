@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -34,10 +36,12 @@ public abstract class ReadListFragment extends BaseFragment {
     private FirebaseRecyclerAdapter<Book, BookViewHolder> mAdapter;
     private AlertDialog levelDialog;
     private RecyclerView mRecycler;
+    private ProgressBar progressBar;
     private LinearLayoutManager mManager;
     private String userId;
 
-    public ReadListFragment() {}
+    public ReadListFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +49,10 @@ public abstract class ReadListFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_read, container, false);
 
         mRecycler = (RecyclerView) rootView.findViewById(R.id.read_list);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.keepSynced(true);
 
         return rootView;
     }
@@ -52,9 +60,6 @@ public abstract class ReadListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.keepSynced(true);
 
         mManager = new LinearLayoutManager(getActivity());
         mManager.setReverseLayout(true);

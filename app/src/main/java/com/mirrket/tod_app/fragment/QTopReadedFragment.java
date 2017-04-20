@@ -3,9 +3,9 @@ package com.mirrket.tod_app.fragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
-public class TopReadingFragment extends BookListFragment {
+public class QTopReadedFragment extends BookListFragment {
 
-    public TopReadingFragment() {}
+    public QTopReadedFragment() {}
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
@@ -13,7 +13,8 @@ public class TopReadingFragment extends BookListFragment {
         String myUserId = getUid();
         Query myPostsQuery = databaseReference
                 .child("books")
-                .orderByChild("readingCount");
+                .orderByChild("readedCount")
+                .limitToLast(100);
 
         return myPostsQuery;
     }

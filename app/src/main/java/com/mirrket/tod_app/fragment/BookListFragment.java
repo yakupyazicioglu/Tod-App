@@ -25,7 +25,7 @@ import com.mirrket.tod_app.viewholder.BookViewHolder;
 
 public abstract class BookListFragment extends BaseFragment {
     private static final String TAG = "BookListFragment";
-    int limitPost = 100;
+    private int limitPost = 100;
 
     // [START define_database_reference]
     private DatabaseReference mDatabase;
@@ -40,12 +40,12 @@ public abstract class BookListFragment extends BaseFragment {
     public BookListFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
 
         mRecycler = (RecyclerView) rootView.findViewById(R.id.book_discover_list);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.keepSynced(true);
@@ -62,6 +62,19 @@ public abstract class BookListFragment extends BaseFragment {
         mManager.setStackFromEnd(true);
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(mManager);
+    }
+
+    public int getItemCount() {
+        return mRecycler.getChildCount();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getItemCount() == 0)
+            progressBar.setVisibility(View.VISIBLE);
+        else
+            progressBar.setVisibility(View.GONE);
     }
 
     @Override

@@ -9,7 +9,7 @@
     <string name="title_activity_register">Üye Ol</string>
     <string name="title_activity_login">Giriş Yap</string>
 
-    <string name="search_hint">Kitap, Yazar..</string>
+    <string name="search_book">Kitap ara..</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec condimentum ante, quis mattis mi. Proin ut rhoncus libero, ac euismod neque. Ut suscipit, enim a facilisis consequat, orci lacus venenatis orci, at ultricies orci nulla sed ex. In condimentum viverra velit, eget feugiat libero imperdiet vel. Aenean pretium, lectus vitae bibendum bibendum, diam turpis convallis eros, quis tristique leo sapien at ipsum. Praesent eu odio id nulla lobortis auctor.</string>
     <string name="hint_comment">Yorum yap..</string>
     <string name="comment_text">Gönder</string>
@@ -94,6 +94,7 @@
     <string name="moved_reading">Okuyoruma taşındı</string>
     <string name="moved_wtread">Okuyacağıma taşındı</string>
     <string name="removed_from_list">Listeden silindi!</string>
+    <string name="thank_for_donate">Desteğiniz için teşekkürler!</string>
 
     <!-- short book comment -->
     <string name="lates_added">Son Eklenenler</string>
@@ -110,5 +111,29 @@
     <string name="save">Kaydet</string>
     <string name="cancel">İptal</string>
     <string name="more_app">Daha fazla Mirrket uygulaması için</string>
+    <string name="input_user_name">Yeni kullanıcı adı..</string>
+    <string name="null_user_name">Kullanıcı adı boş bırakılamaz!</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_home">Kitaplar</string>
+    <string name="nav_authors">Yazarlar</string>
+    <string name="nav_categories">Kategoriler</string>
+    <string name="nav_settings">Ayarlar</string>
+    <string name="nav_others">Diğerleri</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Kitaplar</item>
+        <item>Yazarlar</item>
+        <item>Kategoriler</item>
+        <item>Ayarlar</item>
+    </string-array>
+
+    <string name="activity_title_about_us">Hakkımızda</string>
+    <string name="activity_title_donate">Bağış Yap</string>
 </resources>

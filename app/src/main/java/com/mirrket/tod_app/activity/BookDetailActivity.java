@@ -198,28 +198,6 @@ public class BookDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_book_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        switch (i) {
-            case R.id.action_profile:
-                startActivity(new Intent(this, UserProfileActivity.class));
-                break;
-            case R.id.action_setting:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         // Remove post value event listener

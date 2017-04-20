@@ -50,10 +50,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:padding="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -88,10 +87,11 @@
             android:id="@+id/recycler_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/comment_form"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             tools:listitem="@layout/item_comment" />
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

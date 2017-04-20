@@ -4,14 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.MainActivity">
+    tools:context=".fragment.AuthorsFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/book_discover_list"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        tools:listitem="@layout/item_author" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contextClickable="true"
+            app:iconifiedByDefault="false"
+            app:queryHint="@string/search_author"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/author_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_author"
+            tools:listitem="@layout/item_author"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    </RelativeLayout>
 
 </FrameLayout>

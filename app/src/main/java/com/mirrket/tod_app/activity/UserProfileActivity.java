@@ -42,16 +42,13 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mirrket.tod_app.R;
-import com.mirrket.tod_app.fragment.ReadedFragment;
-import com.mirrket.tod_app.fragment.ReadingFragment;
-import com.mirrket.tod_app.fragment.WTReadFragment;
-import com.mirrket.tod_app.models.Comment;
+import com.mirrket.tod_app.fragment.QReadedFragment;
+import com.mirrket.tod_app.fragment.QReadingFragment;
+import com.mirrket.tod_app.fragment.QWTReadFragment;
 import com.mirrket.tod_app.models.User;
 import com.mirrket.tod_app.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -84,6 +81,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     // [START declare_database_ref]
     private DatabaseReference mDatabase;
     private DatabaseReference mUserRef;
+    private StorageReference userImg;
+    private FirebaseStorage mStorage;
     private StorageReference userImgRef;
     private ValueEventListener mUserListener;
     private UploadTask uploadTask;
@@ -137,6 +136,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             public void onCancelled(DatabaseError databaseError) {
                 snackText = getString(R.string.failed_load_post);
                 showSnack(snackText);
+                mTitle.setText("");
                 // [END_EXCLUDE]
             }
         };
@@ -151,9 +151,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-                    new ReadingFragment(userId),
-                    new ReadedFragment(userId),
-                    new WTReadFragment(userId),
+                    new QReadingFragment(userId),
+                    new QReadedFragment(userId),
+                    new QWTReadFragment(userId),
             };
             private final String[] mFragmentNames = new String[] {
                     getString(R.string.heading_reading),
@@ -188,8 +188,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        if(userId != getUid())
+        if(userId != getUid()) {
             mViewPager.setVisibility(View.INVISIBLE);
+            profileImg.setVisibility(View.INVISIBLE);
+        }
 
         profileImg.setOnClickListener(this);
         mUserName.setOnClickListener(this);
@@ -210,6 +212,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 Picasso.with(getApplicationContext())
                         .load(user.photoUrl)
                         .transform(new CircleTransform())
+                        .fit()
                         .placeholder(R.drawable.ic_action_account_circle_40)
                         .into(profileImg);
             }
@@ -302,20 +305,25 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void showNameDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Kullanıcı adınızı giriniz..");
+        builder.setTitle(R.string.input_user_name);
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         builder.setView(input);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 newUserName = input.getText().toString().trim();
+                if(TextUtils.isEmpty(newUserName)){
+                    snackText = getString(R.string.null_user_name);
+                    showSnack(snackText);
+                }
+                else
                 writeUserName(newUserName);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -346,6 +354,23 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
+    private void deleteOldImg(final String photoUrl) {
+        StorageReference storageRef = mStorage.getReferenceFromUrl(photoUrl);
+        storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                Log.d(TAG, "onSuccess: deleted file");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Log.d(TAG, "onFailure: did not delete file");
             }
         });
     }
@@ -412,7 +437,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 mIsTheTitleVisible = true;
             }
 
-        } else {
+        }
+        else {
 
             if (mIsTheTitleVisible) {
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);

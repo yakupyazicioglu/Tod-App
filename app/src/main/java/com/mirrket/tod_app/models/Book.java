@@ -18,6 +18,7 @@ public class Book {
     public String page;
     public String book_info;
     public String searchRef;
+    public String category;
     public int readedCount = 0;
     public int wantToReadCount = 0;
     public int readingCount = 0;
@@ -33,15 +34,16 @@ public class Book {
         // Default constructor required for calls to DataSnapshot.getValue(Book.class)
     }
 
-    public Book(String bookedBy, String coverUrl, String book, String author,
-                String publisher, String page, String book_info, String searchRef) {
-        this.bookedBy = bookedBy;
+    public Book(String coverUrl, String book, String author,
+                String publisher, String page, String book_info,
+                String category, String searchRef) {
         this.coverUrl = coverUrl;
         this.book = book;
         this.author = author;
         this.publisher = publisher;
         this.page = page;
         this.book_info = book_info;
+        this.category = category;
         this.searchRef = searchRef;
     }
 
@@ -55,6 +57,7 @@ public class Book {
         result.put("publisher", publisher);
         result.put("page", page);
         result.put("book_info", book_info);
+        result.put("category", category);
         result.put("searchRef", searchRef);
         result.put("readedCount", readedCount);
         result.put("readed", readed);

@@ -33,7 +33,4 @@ public class AuthorViewHolder extends RecyclerView.ViewHolder {
                 .into(photoUrl);
         author_name.setText(author.name);
     }
-
-
-
 }

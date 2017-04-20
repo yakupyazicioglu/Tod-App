@@ -151,18 +151,6 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
 
-        /*viewHolder.ratingBar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int userRate = 0;
-                if (model.rates.get(getUid()) != null) {
-                    userRate = model.rates.get(getUid());
-                }
-                rateBookClicked(bookKey, userRate);
-                return false;
-            }
-        });*/
-
         // Determine if the current user has liked this post and set UI accordingly
 
         if (model.readed.containsKey(getUid())) {
